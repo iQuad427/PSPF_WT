@@ -6,6 +6,7 @@
 #define PSPF_WT_SOLUTION_H
 
 
+// TODO: add solution class to Makefile
 class Solution {
 private:
     vector<int> state;

@@ -6,5 +6,6 @@
 
 
 string Solution::toString() {
-    return this->instance << " " << this->score << " " << this->state;
+    // TODO: should return a string containing, "instance_name score"
+    return this->instance << " " << this->score;
 }

@@ -79,6 +79,9 @@ void launchExperiment(Context context, vector<string> files) {
 
                 // TODO: find a way to stringify the solution object
                 resultFile << solution.toString() << "\n";
+
+                // TODO: going face a problem since we must execute each algo a certain number of time
+                //  but I was expecting both the best known and result files to have the same format
             }
 
             resultFile.close();
