@@ -1,8 +1,5 @@
 
 #include "variable_neighbourhood_descent.h"
-#include <iostream>
-
-using namespace std;
 
 void VariableNeighbourhoodDescent::configure(
         State (*generateState) (PfspInstance&),

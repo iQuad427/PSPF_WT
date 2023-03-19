@@ -3,9 +3,6 @@
 //
 
 #include "iterative_improvement.h"
-#include <iostream>
-
-using namespace std;
 
 void IterativeImprovement::configure(
         State (*generateState) (PfspInstance&),

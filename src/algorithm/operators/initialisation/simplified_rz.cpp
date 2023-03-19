@@ -1,6 +1,5 @@
-#include "../../../pfsp/pfspinstance.h"
-#include <iostream>
-#include <vector>
+
+#include "../operators.h"
 
 using namespace std;
 

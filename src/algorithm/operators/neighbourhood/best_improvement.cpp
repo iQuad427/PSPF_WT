@@ -2,8 +2,7 @@
 // Created by Quentin Roels on 04/03/2023.
 //
 
-#include <vector>
-#include "../../../pfsp/pfspinstance.h"
+#include "../operators.h"
 
 using namespace std;
 
