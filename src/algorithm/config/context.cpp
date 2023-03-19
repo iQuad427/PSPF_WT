@@ -12,8 +12,8 @@ int Context::getAlgorithm() {
     return this->algorithm;
 }
 
-void Context::setAlgorithm(string algo) {
-    this->algortithm = algo
+void Context::setAlgorithm(int algo) {
+    this->algorithm = algo;
 }
 
 

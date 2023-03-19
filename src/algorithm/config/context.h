@@ -8,6 +8,11 @@
 #include "../operators/operators.h"
 #include "../implementation/iterative/iterative_improvement.h"
 #include "../implementation/vnd/variable_neighbourhood_descent.h"
+#include "../solution.h"
+
+#define ALL 0
+#define II 1
+#define VND 2
 
 using namespace std;
 typedef vector<int> State;
@@ -15,7 +20,7 @@ typedef vector<int> State;
 class Context {
 private:
     string path;
-    string algorithm;
+    int algorithm;
     State (*initialisation) (PfspInstance&);
     State (*neighbourhood) (State, State (*) (State, int, int), PfspInstance&);
     State (*pivotingII) (State, int, int);
@@ -23,9 +28,9 @@ private:
 
 public:
     string getPath();
-    string getAlgorithm();
+    int getAlgorithm();
 
-    void setAlgorithm(string algo);
+    void setAlgorithm(int algo);
     void setInputDirectory(char* path);
     void setInitialisation(char* config);
     void setNeighbourhood(char* config);
