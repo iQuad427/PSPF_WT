@@ -4,8 +4,8 @@
 void VariableNeighbourhoodDescent::configure(
         State (*generateState) (PfspInstance&),
         State (*improveState) (State, State (*) (State, int, int), PfspInstance&),
-        vector<State (*) (State, int, int)> stateModifications)
-{
+        vector<State (*) (State, int, int)> stateModifications
+        ) {
     this->improveState = improveState;
     this->generateState = generateState;
     this->stateModifications = stateModifications;

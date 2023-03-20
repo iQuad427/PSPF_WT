@@ -16,6 +16,11 @@ Context parseArguments(int argc, char* argv[]);
 vector<string> getInputFiles(Context context);
 string buildOutputFileNameFromContext(Context context);
 void launchExperiment(Context context, vector<string>);
+void retrieveOperators();
+
+vector<vector<int> (*) (PfspInstance&)> stateGenerations;
+vector<vector<int> (*) (vector<int>, vector<int> (*) (vector<int>, int, int), PfspInstance&)> stateImprovements;
+vector<vector<int> (*) (vector<int>, int, int)> stateModifications;
 
 int main(int argc, char *argv[]) {
     /*
@@ -55,8 +60,16 @@ void launchExperiment(Context context, vector<string> files) {
     switch (context.getAlgorithm()) {
         case ALL: {
             cout << "Experiment: Executing ALL Combinations" << endl;
-
+            retrieveOperators();
             Context subContext;
+
+            for (auto generate : stateGenerations) {
+                for (auto improve : stateImprovements) {
+                    for (auto modify : stateModifications) {
+                        continue;
+                    }
+                }
+            }
 
             // TODO: loop through all operators and create new context each time,
             //  then call launchExperiment on each of those new contexts
@@ -68,8 +81,11 @@ void launchExperiment(Context context, vector<string> files) {
             // TODO: save experiment results in a file (I created a pseudo code hereunder)
             cout << "Experiment: " << buildOutputFileNameFromContext(context) << endl;
 
+            string fileName = buildOutputFileNameFromContext(context);
+            cout << "File Name: " << fileName << endl;
+
             ofstream resultFile;
-            resultFile.open(buildOutputFileNameFromContext(context));
+            resultFile.open(fileName);
             resultFile << "Writing this to a file.\n";
 
             for (string filePath: files) {
@@ -136,7 +152,6 @@ Solution executeInstance(Context context, char* path) {
     cout << "Total weighted completion time: " << weightedSumCompletionTimes << endl;
     cout << "Total weighted tardiness: " << weightedTardiness << endl;
 
-    // TODO: Format solution object from solution of the execution
     return Solution(path, weightedTardiness);
 }
 
@@ -155,36 +170,27 @@ bool solutionIsValid(State solution, PfspInstance& instance) {
 }
 
 State executeVariableNeighbourhoodDescent(PfspInstance& instance, Context context) {
-    // TODO: use context to configure the algorithm
     VariableNeighbourhoodDescent algorithm;
-    vector<State (*) (State, int, int)> stateModifications;
-
-    stateModifications.insert(stateModifications.begin(), transpose);
-    stateModifications.insert(stateModifications.begin(), insert);
-    stateModifications.insert(stateModifications.begin(), exchange);
 
     algorithm.configure(
-            simplifiedRzHeuristic,
-            firstImprovement,
-            stateModifications
+            context.initialisation,
+            context.neighbourhood,
+            context.pivotingVND
     );
 
     return algorithm.execute(instance);
-
 }
 
 State executeIterativeImprovement(PfspInstance& instance, Context context) {
-    // TODO: use context to configure the algorithm
     IterativeImprovement algorithm;
 
     algorithm.configure(
-            simplifiedRzHeuristic,
-            firstImprovement,
-            insert
+            context.initialisation,
+            context.neighbourhood,
+            context.pivotingII
     );
 
     return algorithm.execute(instance);
-
 }
 
 Context parseArguments(int argc, char* argv[]) {
@@ -204,17 +210,17 @@ Context parseArguments(int argc, char* argv[]) {
         if (!(((string) argv[3]).compare("--ii"))) {
 
             context.setAlgorithm(II);
-            context.setInitialisation(argv[3]); // --rand or --srz
-            context.setNeighbourhood(argv[4]); // --first or --best
-            context.setPivotingII(argv[5]); // --tran or --ex or --in
+            context.setInitialisation(argv[4]); // --rand or --srz
+            context.setNeighbourhood(argv[5]); // --first or --best
+            context.setPivotingII(argv[6]); // --tran or --ex or --in
 
-        } else if (!(((string) argv[1]).compare("--vnd"))) {
+        } else if (!(((string) argv[3]).compare("--vnd"))) {
 
             context.setAlgorithm(VND);
-            context.setInitialisation(argv[3]); // --rand or --srz
-            context.setNeighbourhood(argv[4]); // --first or --best
+            context.setInitialisation(argv[4]); // --rand or --srz
+            context.setNeighbourhood(argv[5]); // --first or --best
 
-            char* pivots[] = {argv[5], argv[6], argv[7]};
+            char* pivots[] = {argv[6], argv[7], argv[8]};
             context.setPivotingVND(pivots); // sequence of --tran/--ex/--in
         }
     }
@@ -234,6 +240,60 @@ vector<string> getInputFiles(Context context) {
 }
 
 string buildOutputFileNameFromContext(Context context) {
-    return "out/mais oui c'est clair";
+    string fileName = "out/";
+
+    cout << "algo: " << context.getAlgorithm() << endl;
+    switch (context.getAlgorithm()) {
+        case II:
+            fileName += "ii/ii";
+            break;
+        case VND:
+            fileName += "vnd/vnd";
+            break;
+    }
+    cout << "neighbour: " << context.getNeighbour() << endl;
+    switch (context.getNeighbour()) {
+        case BEST:
+            fileName += "-best";
+            break;
+        case FIRST:
+            fileName += "-first";
+            break;
+    }
+    cout << "initial: " << context.getInitial() << endl;
+    switch (context.getInitial()) {
+        case RANDOM:
+            fileName += "-rnd";
+            break;
+        case SIMPLE_RZ:
+            fileName += "-srz";
+            break;
+    }
+
+    for (int pivot : context.getPivots()) {
+        switch (pivot) {
+            case TRANSPOSE:
+                fileName += "-tran";
+                break;
+            case EXCHANGE:
+                fileName += "-ex";
+                break;
+            case INSERT:
+                fileName += "-ins";
+                break;
+        }
+    }
+    return fileName;
 }
 
+void retrieveOperators() {
+    stateModifications.insert(stateModifications.end(), transpose);
+    stateModifications.insert(stateModifications.end(), exchange);
+    stateModifications.insert(stateModifications.end(), insert);
+
+    stateImprovements.insert(stateImprovements.end(), bestImprovement);
+    stateImprovements.insert(stateImprovements.end(), firstImprovement);
+
+    stateGenerations.insert(stateGenerations.end(), randomPermutation);
+    stateGenerations.insert(stateGenerations.end(), simplifiedRzHeuristic);
+}

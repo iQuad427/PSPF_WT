@@ -25,19 +25,4 @@ void getWeightedCompletionTime(vector <pair<double, int> > &WCT, PfspInstance &i
 vector<int> randomPermutation(PfspInstance &instance);
 int generateRndPosition(int min, int max);
 
-//vector<State (*) (PfspInstance&)> stateGenerations{
-////    simplifiedRzHeuristic,
-////    randomPermutation
-//};
-//
-//vector<State (*) (State, State (*) (State, int, int), PfspInstance&)> stateImprovements{
-////    firstImprovement,
-////    bestImprovement
-//};
-//vector<State (*) (State, int, int)> stateModifications{
-////        exchange,
-////        insert,
-////        transpose
-//};
-
 #endif //PSPF_WT_OPERATORS_H
