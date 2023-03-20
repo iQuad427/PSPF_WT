@@ -8,13 +8,14 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-int executeInstance(Context context, char* path);
+Solution executeInstance(Context context, char* path);
 bool solutionIsValid(State solution, PfspInstance& instance);
 State executeVariableNeighbourhoodDescent(PfspInstance& instance, Context context);
 State executeIterativeImprovement(PfspInstance& instance, Context context);
 Context parseArguments(int argc, char* argv[]);
 vector<string> getInputFiles(Context context);
 string buildOutputFileNameFromContext(Context context);
+void launchExperiment(Context context, vector<string>);
 
 int main(int argc, char *argv[]) {
     /*
@@ -52,16 +53,18 @@ int main(int argc, char *argv[]) {
 
 void launchExperiment(Context context, vector<string> files) {
     switch (context.getAlgorithm()) {
-        case ALL:
+        case ALL: {
             cout << "Experiment: Executing ALL Combinations" << endl;
 
             Context subContext;
+
             // TODO: loop through all operators and create new context each time,
             //  then call launchExperiment on each of those new contexts
 
-            break;
+            return;
+        }
         case II:
-        case VND:
+        case VND: {
             // TODO: save experiment results in a file (I created a pseudo code hereunder)
             cout << "Experiment: " << buildOutputFileNameFromContext(context) << endl;
 
@@ -69,13 +72,11 @@ void launchExperiment(Context context, vector<string> files) {
             resultFile.open(buildOutputFileNameFromContext(context));
             resultFile << "Writing this to a file.\n";
 
-            Solution solution;
+            for (string filePath: files) {
+                char *path = new char[filePath.length() + 1];
+                strcpy(path, filePath.c_str());
 
-            for (string file : files) {
-                char* path = new char[filePath.length() + 1];
-                strcpy(char_array, filePath.c_str());
-
-                solution = executeInstance(context, path);
+                Solution solution = executeInstance(context, path);
 
                 // TODO: find a way to stringify the solution object
                 resultFile << solution.toString() << "\n";
@@ -87,22 +88,16 @@ void launchExperiment(Context context, vector<string> files) {
             resultFile.close();
 
             break;
+        }
         default:
-            cout << "Error: Unknown algorithm selected : " << context.getAlgorithm() << endl;
-            return 1;
-    }
-
-    for (string filePath : files) {
-        cout << filePath << endl;
-
-        char* char_array = new char[filePath.length() + 1];
-        strcpy(char_array, filePath.c_str());
-
-        executeInstance(context, char_array);
+            cout << "Error: wrong algorithm selected, " << context.getAlgorithm() << endl;
+            throw;
     }
 }
 
 Solution executeInstance(Context context, char* path) {
+    cout << "Instance: " << path << endl;
+
     /* initialize random seed: */
     srand(time(NULL));
 
@@ -110,8 +105,9 @@ Solution executeInstance(Context context, char* path) {
     PfspInstance instance;
 
     /* Read data from file */
-    if (!instance.readDataFromFile(path))
-        return 1;
+    if (!instance.readDataFromFile(path)) {
+        throw;
+    }
 
     State solution;
     if (context.getAlgorithm() == VND) {
@@ -120,7 +116,7 @@ Solution executeInstance(Context context, char* path) {
         solution = executeIterativeImprovement(instance, context);
     } else {
         cout << "Error: wrong context parameter, " << context.getAlgorithm() << endl;
-        return 1;
+        throw;
     }
 
     cout << "Solution: ";
@@ -135,13 +131,13 @@ Solution executeInstance(Context context, char* path) {
     }
 
     /* Compute the WCT of this solution */
-    long int WeightedSumCompletionTimes = instance.computeWCT(solution);
-    long int WeightedTardiness = instance.computeWT(solution);
-    cout << "Total weighted completion time: " << WeightedSumCompletionTimes << endl;
-    cout << "Total weighted tardiness: " << WeightedTardiness << endl;
+    long int weightedSumCompletionTimes = instance.computeWCT(solution);
+    long int weightedTardiness = instance.computeWT(solution);
+    cout << "Total weighted completion time: " << weightedSumCompletionTimes << endl;
+    cout << "Total weighted tardiness: " << weightedTardiness << endl;
 
     // TODO: Format solution object from solution of the execution
-    return Solution();
+    return Solution(path, weightedTardiness);
 }
 
 bool solutionIsValid(State solution, PfspInstance& instance) {
@@ -238,6 +234,6 @@ vector<string> getInputFiles(Context context) {
 }
 
 string buildOutputFileNameFromContext(Context context) {
-    return "../out/mais oui c'est clair";
+    return "out/mais oui c'est clair";
 }
 

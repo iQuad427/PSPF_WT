@@ -4,8 +4,14 @@
 
 #include "solution.h"
 
+Solution::Solution(string instance, long int score) {
+    this->score = score;
+    this->instance = instance;
+}
+
+Solution::~Solution() {}
 
 string Solution::toString() {
     // TODO: should return a string containing, "instance_name score"
-    return this->instance << " " << this->score;
+    return "this is a test";
 }
