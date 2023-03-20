@@ -1,6 +1,6 @@
 all: program
-	./flowshopWCT --spec assets/instances/ --ii --srz --best --in
-	#./flowshopWCT --spec assets/instances/ --vnd --srz --best --in --ex --tran
+	./flowshopWCT assets/instances/ --ii --srz --best --in
+	#./flowshopWCT assets/instances/ --vnd --srz --best --in --ex --tran
 program :
 	g++ -std=c++17 -O3 -c ./src/flowshop.cpp -o bin/flowshop.o
 	g++ -std=c++17 -O3 -c ./src/pfsp/pfspinstance.cpp -o bin/pfspinstance.o

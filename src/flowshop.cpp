@@ -16,11 +16,6 @@ Context parseArguments(int argc, char* argv[]);
 vector<string> getInputFiles(Context context);
 string buildOutputFileNameFromContext(Context context);
 void launchExperiment(Context context, vector<string>);
-void retrieveOperators();
-
-vector<vector<int> (*) (PfspInstance&)> stateGenerations;
-vector<vector<int> (*) (vector<int>, vector<int> (*) (vector<int>, int, int), PfspInstance&)> stateImprovements;
-vector<vector<int> (*) (vector<int>, int, int)> stateModifications;
 
 int main(int argc, char *argv[]) {
     /*
@@ -58,24 +53,6 @@ int main(int argc, char *argv[]) {
 
 void launchExperiment(Context context, vector<string> files) {
     switch (context.getAlgorithm()) {
-        case ALL: {
-            cout << "Experiment: Executing ALL Combinations" << endl;
-            retrieveOperators();
-            Context subContext;
-
-            for (auto generate : stateGenerations) {
-                for (auto improve : stateImprovements) {
-                    for (auto modify : stateModifications) {
-                        continue;
-                    }
-                }
-            }
-
-            // TODO: loop through all operators and create new context each time,
-            //  then call launchExperiment on each of those new contexts
-
-            return;
-        }
         case II:
         case VND: {
             // TODO: save experiment results in a file (I created a pseudo code hereunder)
@@ -92,10 +69,12 @@ void launchExperiment(Context context, vector<string> files) {
                 char *path = new char[filePath.length() + 1];
                 strcpy(path, filePath.c_str());
 
-                Solution solution = executeInstance(context, path);
+                for (int i = 0; i < 5; i++) {
+                    Solution solution = executeInstance(context, path);
 
-                // TODO: find a way to stringify the solution object
-                resultFile << solution.toString() << "\n";
+                    // TODO: find a way to stringify the solution object
+                    resultFile << solution.getPath() << " " << solution.getScore() << "\n";
+                }
 
                 // TODO: going face a problem since we must execute each algo a certain number of time
                 //  but I was expecting both the best known and result files to have the same format
@@ -196,34 +175,25 @@ State executeIterativeImprovement(PfspInstance& instance, Context context) {
 Context parseArguments(int argc, char* argv[]) {
     Context context;
 
-    // Configuration "--all", only require input directory
-    if (!(((string) argv[1]).compare("--all"))) {
-        context.setAlgorithm(ALL);
-        context.setInputDirectory(argv[2]);
-        return context;
+    context.setInputDirectory(argv[1]); // input directory path
+
+    if (!(((string) argv[2]).compare("--ii"))) {
+
+        context.setAlgorithm(II);
+        context.setInitialisation(argv[3]); // --rand or --srz
+        context.setNeighbourhood(argv[4]); // --first or --best
+        context.setPivotingII(argv[5]); // --tran or --ex or --in
+
+    } else if (!(((string) argv[2]).compare("--vnd"))) {
+
+        context.setAlgorithm(VND);
+        context.setInitialisation(argv[3]); // --rand or --srz
+        context.setNeighbourhood(argv[4]); // --first or --best
+
+        char* pivots[] = {argv[5], argv[6], argv[7]};
+        context.setPivotingVND(pivots); // sequence of --tran/--ex/--in
     }
 
-    // Configuration "--spec", only require input directory
-    if (!(((string) argv[1]).compare("--spec"))) {
-        context.setInputDirectory(argv[2]); // input directory path
-
-        if (!(((string) argv[3]).compare("--ii"))) {
-
-            context.setAlgorithm(II);
-            context.setInitialisation(argv[4]); // --rand or --srz
-            context.setNeighbourhood(argv[5]); // --first or --best
-            context.setPivotingII(argv[6]); // --tran or --ex or --in
-
-        } else if (!(((string) argv[3]).compare("--vnd"))) {
-
-            context.setAlgorithm(VND);
-            context.setInitialisation(argv[4]); // --rand or --srz
-            context.setNeighbourhood(argv[5]); // --first or --best
-
-            char* pivots[] = {argv[6], argv[7], argv[8]};
-            context.setPivotingVND(pivots); // sequence of --tran/--ex/--in
-        }
-    }
     return context;
 }
 
@@ -284,16 +254,4 @@ string buildOutputFileNameFromContext(Context context) {
         }
     }
     return fileName;
-}
-
-void retrieveOperators() {
-    stateModifications.insert(stateModifications.end(), transpose);
-    stateModifications.insert(stateModifications.end(), exchange);
-    stateModifications.insert(stateModifications.end(), insert);
-
-    stateImprovements.insert(stateImprovements.end(), bestImprovement);
-    stateImprovements.insert(stateImprovements.end(), firstImprovement);
-
-    stateGenerations.insert(stateGenerations.end(), randomPermutation);
-    stateGenerations.insert(stateGenerations.end(), simplifiedRzHeuristic);
 }

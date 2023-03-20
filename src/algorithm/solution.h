@@ -20,6 +20,9 @@ public:
     Solution(string instance, long int score);
     ~Solution();
 
+    string getPath();
+    long int getScore();
+
     string toString();
 };
 

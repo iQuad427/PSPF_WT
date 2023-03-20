@@ -9,6 +9,14 @@ Solution::Solution(string instance, long int score) {
     this->instance = instance;
 }
 
+long int Solution::getScore() {
+    return this->score;
+}
+
+string Solution::getPath() {
+    return this->instance;
+}
+
 Solution::~Solution() {}
 
 string Solution::toString() {
