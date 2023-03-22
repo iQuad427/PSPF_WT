@@ -103,7 +103,6 @@ bool PfspInstance::readDataFromFile(char *fileName) {
             priority[j] = readValue;
         }
 
-        cout << "All is read from file." << std::endl;
         fileIn.close();
     } else {
         cout << "ERROR. file:pfspInstance.cpp, method:readDataFromFile, "

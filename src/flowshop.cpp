@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <chrono>
 
 #include "algorithm/config/context.h"
 #include "algorithm/operators/operators.h"
@@ -55,7 +56,6 @@ void launchExperiment(Context context, vector<string> files) {
     switch (context.getAlgorithm()) {
         case II:
         case VND: {
-            // TODO: save experiment results in a file (I created a pseudo code hereunder)
             cout << "Experiment: " << buildOutputFileNameFromContext(context) << endl;
 
             string fileName = buildOutputFileNameFromContext(context);
@@ -63,21 +63,28 @@ void launchExperiment(Context context, vector<string> files) {
 
             ofstream resultFile;
             resultFile.open(fileName);
-            resultFile << "Writing this to a file.\n";
+            resultFile << "Instance Score Time" << endl;
 
             for (string filePath: files) {
                 char *path = new char[filePath.length() + 1];
                 strcpy(path, filePath.c_str());
 
                 for (int i = 0; i < 5; i++) {
+
+                    auto start = chrono::high_resolution_clock::now();
+
                     Solution solution = executeInstance(context, path);
 
-                    // TODO: find a way to stringify the solution object
-                    resultFile << solution.getPath() << " " << solution.getScore() << "\n";
+                    auto end = chrono::high_resolution_clock::now();
+
+                    auto time = chrono::duration_cast<chrono::microseconds>(end - start);
+
+                    fs::path p(solution.getPath());
+                    resultFile << p.stem().string() << " ";
+                    resultFile << solution.getScore()  << " ";
+                    resultFile << ((double) time.count()) / 1000000 << endl;
                 }
 
-                // TODO: going face a problem since we must execute each algo a certain number of time
-                //  but I was expecting both the best known and result files to have the same format
             }
 
             resultFile.close();
@@ -114,22 +121,22 @@ Solution executeInstance(Context context, char* path) {
         throw;
     }
 
-    cout << "Solution: ";
-    for (int i = 1; i <= instance.getNbJob(); ++i)
-        cout << solution[i] << " ";
-    cout << endl;
-
-    if (solutionIsValid(solution, instance)) {
-        cout << "solution is valid" << endl;
-    } else {
-        cout << "solution is not valid" << endl;
-    }
+//    cout << "Solution: ";
+//    for (int i = 1; i <= instance.getNbJob(); ++i)
+//        cout << solution[i] << " ";
+//    cout << endl;
+//
+//    if (solutionIsValid(solution, instance)) {
+//        cout << "solution is valid" << endl;
+//    } else {
+//        cout << "solution is not valid" << endl;
+//    }
 
     /* Compute the WCT of this solution */
     long int weightedSumCompletionTimes = instance.computeWCT(solution);
     long int weightedTardiness = instance.computeWT(solution);
-    cout << "Total weighted completion time: " << weightedSumCompletionTimes << endl;
-    cout << "Total weighted tardiness: " << weightedTardiness << endl;
+//    cout << "Total weighted completion time: " << weightedSumCompletionTimes << endl;
+//    cout << "Total weighted tardiness: " << weightedTardiness << endl;
 
     return Solution(path, weightedTardiness);
 }
@@ -212,7 +219,6 @@ vector<string> getInputFiles(Context context) {
 string buildOutputFileNameFromContext(Context context) {
     string fileName = "out/";
 
-    cout << "algo: " << context.getAlgorithm() << endl;
     switch (context.getAlgorithm()) {
         case II:
             fileName += "ii/ii";
@@ -221,7 +227,7 @@ string buildOutputFileNameFromContext(Context context) {
             fileName += "vnd/vnd";
             break;
     }
-    cout << "neighbour: " << context.getNeighbour() << endl;
+
     switch (context.getNeighbour()) {
         case BEST:
             fileName += "-best";
@@ -230,7 +236,7 @@ string buildOutputFileNameFromContext(Context context) {
             fileName += "-first";
             break;
     }
-    cout << "initial: " << context.getInitial() << endl;
+
     switch (context.getInitial()) {
         case RANDOM:
             fileName += "-rnd";
