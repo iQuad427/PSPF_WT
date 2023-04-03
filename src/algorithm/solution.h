@@ -14,14 +14,16 @@ using namespace std;
 class Solution {
 private:
     vector<int> state;
+    int size;
     string instance;
     long int score;
 public:
-    Solution(string instance, long int score);
+    Solution(string instance, int size, long int score);
     ~Solution();
 
     string getPath();
     long int getScore();
+    int getSize();
 
     string toString();
 };

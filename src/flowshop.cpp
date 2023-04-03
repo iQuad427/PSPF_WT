@@ -20,11 +20,7 @@ void launchExperiment(Context context, vector<string>);
 
 int main(int argc, char *argv[]) {
     /*
-     * TODO : implement Context variable to save the parameters of the execution
      * Arguments :
-     *  - execution type :
-     *      - "--all" : benchmark, do every combination, every instances, save everything
-     *      - "--spec" : specific configuration
      *  - input (directory containing the instances on which execute the algorithm)
      *      - will execute on all files of the input (sorted in alphabetical order)
      *      - output per algorithm combination on independent data files
@@ -33,18 +29,17 @@ int main(int argc, char *argv[]) {
      *      - initialisation
      *      - neighbourhood
      *      - pivoting
-     *      - NOTE : possibility to run every combination in the same run
      *
      * Output file name :
-     *  - ii-initialisation-neighbourhood-pivoting-instance_size.dat
-     *  - vnd-initialisation-neighbourhood-pivoting_order-instance_size.dat
-     *      example : ii-random-first-exchange-20_50.dat
-     *      example : vnd-random-first-transpose_exchange_insert-20_50.dat
+     *  - ii-initialisation-neighbourhood-pivoting-instance_size
+     *  - vnd-initialisation-neighbourhood-pivoting_order-instance_size
+     *      example : ii-random-first-exchange-20_50
+     *      example : vnd-random-first-transpose_exchange_insert-20_50
      *
      * Output file format :
      *  - Instance name
      *  - Best score found for the instance
-     *  - The solution?
+     *  - Time taken
      */
     Context context = parseArguments(argc, argv);
     vector<string> files = getInputFiles(context);
@@ -56,18 +51,19 @@ void launchExperiment(Context context, vector<string> files) {
     switch (context.getAlgorithm()) {
         case II:
         case VND: {
-            cout << "Experiment: " << buildOutputFileNameFromContext(context) << endl;
-
             string fileName = buildOutputFileNameFromContext(context);
-            cout << "File Name: " << fileName << endl;
+            cout << "Experiment: " << fileName << endl;
 
             ofstream resultFile;
             resultFile.open(fileName);
-            resultFile << "Instance Score Time" << endl;
+            resultFile << "Instance Size Score Time" << endl;
 
             for (string filePath: files) {
                 char *path = new char[filePath.length() + 1];
                 strcpy(path, filePath.c_str());
+
+                /* initialize random seed */
+                srand(time(NULL));
 
                 for (int i = 0; i < 5; i++) {
 
@@ -81,6 +77,7 @@ void launchExperiment(Context context, vector<string> files) {
 
                     fs::path p(solution.getPath());
                     resultFile << p.stem().string() << " ";
+                    resultFile << solution.getSize() << " ";
                     resultFile << solution.getScore()  << " ";
                     resultFile << ((double) time.count()) / 1000000 << endl;
                 }
@@ -100,9 +97,6 @@ void launchExperiment(Context context, vector<string> files) {
 Solution executeInstance(Context context, char* path) {
     cout << "Instance: " << path << endl;
 
-    /* initialize random seed: */
-    srand(time(NULL));
-
     /* Create instance object */
     PfspInstance instance;
 
@@ -121,24 +115,11 @@ Solution executeInstance(Context context, char* path) {
         throw;
     }
 
-//    cout << "Solution: ";
-//    for (int i = 1; i <= instance.getNbJob(); ++i)
-//        cout << solution[i] << " ";
-//    cout << endl;
-//
-//    if (solutionIsValid(solution, instance)) {
-//        cout << "solution is valid" << endl;
-//    } else {
-//        cout << "solution is not valid" << endl;
-//    }
-
     /* Compute the WCT of this solution */
     long int weightedSumCompletionTimes = instance.computeWCT(solution);
     long int weightedTardiness = instance.computeWT(solution);
-//    cout << "Total weighted completion time: " << weightedSumCompletionTimes << endl;
-//    cout << "Total weighted tardiness: " << weightedTardiness << endl;
 
-    return Solution(path, weightedTardiness);
+    return Solution(path, instance.getNbJob(), weightedTardiness);
 }
 
 bool solutionIsValid(State solution, PfspInstance& instance) {

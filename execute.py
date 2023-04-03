@@ -13,17 +13,17 @@ if __name__ == '__main__':
             for init in initialisations:
                 for improve in improvements:
                     for modif in modifications:
-                        command = f"./flowshopWCT {input_directory} --ii {init} {improve} {modif}"
+                        command = f"./PFSP-WT {input_directory} --ii {init} {improve} {modif}"
                         print(command)
                         os.system(command)
 
         elif algo == "--vnd":
             for init in initialisations:
                 for improve in improvements:
-                    command = f"./flowshopWCT {input_directory} --vnd {init} {improve} --tran --in --ex"
+                    command = f"./PFSP-WT {input_directory} --vnd {init} {improve} --tran --in --ex"
                     print(command)
                     os.system(command)
 
-                    command = f"./flowshopWCT {input_directory} --vnd {init} {improve} --tran --ex --in"
+                    command = f"./PFSP-WT {input_directory} --vnd {init} {improve} --tran --ex --in"
                     print(command)
                     os.system(command)

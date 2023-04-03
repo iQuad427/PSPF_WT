@@ -12,19 +12,19 @@ for (algo in files) {
   # Average the values for solution score and execution time w.r.t the instance
   mean.result <- aggregate(cbind(Score, Time) ~ Instance, data=score.instances, FUN=mean)
 
-  # Compute the reative percentage deviation
+  # Compute the relative percentage deviation
   instance.cost <- 100 * (mean.result$Score - best.known$Value) / best.known$Value
 
   # Store the results of each instance (relative percentage deviation + execution time)
   result <- data.frame("Instance"=best.known$Instance , "Deviation"=instance.cost, "Time"=mean.result$Time)
 
   # Create output files for the results (separated per algorithm)
-  file.create(paste0("src/statistics/stats/", basename(algo)))
-  write.table(result, file=paste0("src/statistics/stats/", basename(algo)), row.names=FALSE, quote=FALSE)
+  file.create(paste0("src/statistics/stats/algo/", basename(algo)))
+  write.table(result, file=paste0("src/statistics/stats/algo/", basename(algo)), row.names=FALSE, quote=FALSE)
 }
 
 # Get all the results from previous steps
-results <- list.files(path="src/statistics/stats", full.names=TRUE, recursive=TRUE)
+results <- list.files(path="src/statistics/stats/algo", full.names=TRUE, recursive=TRUE)
 
 # Store algorithms name (same order as results files)
 algos <- vector(length=length(results))
@@ -54,7 +54,7 @@ for (i in seq_along(results)) {
 
 # Store the results of the statistical tests in a file
 file.create("src/statistics/results/t_test")
-write.table(t_tests, file="src/statistics/results/t_test", row.names=FALSE, quote=FALSE)
+write.table(t_tests, file="src/statistics/results/statistical_tests/t_test", row.names=FALSE, quote=FALSE)
 
 file.create("src/statistics/results/wilcox_test")
-write.table(t_tests, file="src/statistics/results/wilcox_test", row.names=FALSE, quote=FALSE)
+write.table(t_tests, file="src/statistics/results/statistical_tests/wilcox_test", row.names=FALSE, quote=FALSE)

@@ -6,8 +6,7 @@
 #define PSPF_WT_CONTEXT_H
 
 #include "../operators/operators.h"
-#include "../implementation/iterative/iterative_improvement.h"
-#include "../implementation/vnd/variable_neighbourhood_descent.h"
+#include "../implementation/algorithms.h"
 #include "../solution.h"
 
 #define ALL 0
