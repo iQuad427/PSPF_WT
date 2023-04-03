@@ -1,11 +1,12 @@
+# Script to answer question 1.1.1
+
 # Retrieve best known values
 best.known <- read.table("assets/solutions/Best-known Values", sep=" ", header=TRUE)
 
 # Retrieve the tests data
-files.rand <- list.files(path="out", pattern="ii.*rnd.*", full.names=TRUE, recursive=TRUE)
-files.srz <- list.files(path="out", pattern="ii.*srz.*", full.names=TRUE, recursive=TRUE)
+files.rand <- list.files(path="out/ii/", pattern="ii.*rnd.*", full.names=TRUE, recursive=TRUE)
+files.srz <- list.files(path="out/ii/", pattern="ii.*srz.*", full.names=TRUE, recursive=TRUE)
 
-# For each algorithm having random initialisation
 rand.result <- data.frame(matrix(nrow=0, ncol=3, dimnames=list(NULL, c("Size", "Deviation", "Time"))))
 srz.result <- data.frame(matrix(nrow=0, ncol=3, dimnames=list(NULL, c("Size", "Deviation", "Time"))))
 

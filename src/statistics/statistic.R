@@ -53,8 +53,5 @@ for (i in seq_along(results)) {
 }
 
 # Store the results of the statistical tests in a file
-file.create("src/statistics/results/t_test")
-write.table(t_tests, file="src/statistics/results/statistical_tests/t_test", row.names=FALSE, quote=FALSE)
-
-file.create("src/statistics/results/wilcox_test")
-write.table(t_tests, file="src/statistics/results/statistical_tests/wilcox_test", row.names=FALSE, quote=FALSE)
+write.table(t_tests, file="src/statistics/results/algo/t_test", row.names=FALSE, quote=FALSE)
+write.table(wilcox_tests, file="src/statistics/results/algo/wilcox_test", row.names=FALSE, quote=FALSE)
