@@ -1,4 +1,4 @@
-# INFO-H413 - Implementation Exercise 1
+# INFO-H413 - PFSP/WT - Implementation Exercises
 
 ## Description
 
