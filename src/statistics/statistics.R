@@ -10,13 +10,13 @@ for (algo in files) {
   score.instances <- read.table(algo, sep=" ", header=TRUE)
 
   # Average the values for solution score and execution time w.r.t the instance
-  mean.result <- aggregate(cbind(Score, Time) ~ Instance, data=score.instances, FUN=mean)
+  mean.result <- aggregate(cbind(Score, Time) ~ Instance + Size, data=score.instances, FUN=mean)
 
   # Compute the relative percentage deviation
   instance.cost <- 100 * (mean.result$Score - best.known$Value) / best.known$Value
 
   # Store the results of each instance (relative percentage deviation + execution time)
-  result <- data.frame("Instance"=best.known$Instance , "Deviation"=instance.cost, "Time"=mean.result$Time)
+  result <- data.frame("Instance"=best.known$Instance, "Size"=mean.result$Size, "Deviation"=instance.cost, "Time"=mean.result$Time)
 
   # Create output files for the results (separated per algorithm)
   file.create(paste0("src/statistics/stats/algo/", basename(algo)))

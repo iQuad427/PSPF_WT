@@ -8,6 +8,8 @@ modifications = ["--tran", "--ex", "--in"]
 input_directory = "assets/instances"
 
 if __name__ == '__main__':
+    os.system("make")
+
     for algo in algorithms:
         if algo == "--ii":
             for init in initialisations:

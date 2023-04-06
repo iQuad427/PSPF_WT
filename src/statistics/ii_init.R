@@ -7,8 +7,8 @@ best.known <- read.table("assets/solutions/Best-known Values", sep=" ", header=T
 files.rand <- list.files(path="out/ii/", pattern="ii.*rnd.*", full.names=TRUE, recursive=TRUE)
 files.srz <- list.files(path="out/ii/", pattern="ii.*srz.*", full.names=TRUE, recursive=TRUE)
 
-rand.result <- data.frame(matrix(nrow=0, ncol=3, dimnames=list(NULL, c("Size", "Deviation", "Time"))))
-srz.result <- data.frame(matrix(nrow=0, ncol=3, dimnames=list(NULL, c("Size", "Deviation", "Time"))))
+rand.result <- data.frame(matrix(nrow=0, ncol=4, dimnames=list(NULL, c("Algo", "Size", "Deviation", "Time"))))
+srz.result <- data.frame(matrix(nrow=0, ncol=4, dimnames=list(NULL, c("Algo", "Size", "Deviation", "Time"))))
 
 for (algo in files.rand) {
   # Get algorithm results
@@ -21,7 +21,7 @@ for (algo in files.rand) {
   instance.cost <- 100 * (mean.result$Score - best.known$Value) / best.known$Value
 
   # Store the results of each instance (relative percentage deviation + execution time)
-  result <- data.frame("Size"=mean.result$Size, "Deviation"=instance.cost, "Time"=mean.result$Time)
+  result <- data.frame("Algo"=basename(algo), "Size"=mean.result$Size, "Deviation"=instance.cost, "Time"=mean.result$Time)
   rand.result <- rbind(rand.result, result)
 
   # Create output files for the results (separated per algorithm)
@@ -29,7 +29,7 @@ for (algo in files.rand) {
 }
 
 # Average the values for solution derivation and execution time w.r.t to the size of the instance
-rand.result <- aggregate(cbind(Deviation, Time) ~ Size, data=rand.result, FUN=mean)
+rand.result <- aggregate(cbind(Deviation, Time) ~ Algo + Size, data=rand.result, FUN=mean)
 
 # Create output files for the results
 write.table(rand.result, file=paste0("src/statistics/results/init/", "result_random"), row.names=FALSE, quote=FALSE)
@@ -45,7 +45,7 @@ for (algo in files.srz) {
   instance.cost <- 100 * (mean.result$Score - best.known$Value) / best.known$Value
 
   # Store the results of each instance (relative percentage deviation + execution time)
-  result <- data.frame("Size"=mean.result$Size, "Deviation"=instance.cost, "Time"=mean.result$Time)
+  result <- data.frame("Algo"=basename(algo), "Size"=mean.result$Size, "Deviation"=instance.cost, "Time"=mean.result$Time)
   srz.result <- rbind(srz.result, result)
 
   # Create output files for the results (separated per algorithm)
@@ -53,7 +53,7 @@ for (algo in files.srz) {
 }
 
 # Average the values for solution derivation and execution time w.r.t to the size of the instance
-srz.result <- aggregate(cbind(Deviation, Time) ~ Size, data=srz.result, FUN=mean)
+srz.result <- aggregate(cbind(Deviation, Time) ~ Algo + Size, data=srz.result, FUN=mean)
 
 # Create output files for the results
 write.table(srz.result, file=paste0("src/statistics/results/init/", "result_srz"), row.names=FALSE, quote=FALSE)
