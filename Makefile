@@ -26,8 +26,8 @@ context:
 algo:
 	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/iterative/iterative_improvement.cpp -o bin/iterative_improvement.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/vnd/variable_neighbourhood_descent.cpp -o bin/variable_neighbourhood_descent.o
-run:
-    ./PFSP-WT assets/instances/ --ii --rand --best --in
+run: all
+	#./PFSP-WT assets/instances/ --ii --rand --best --in
 	./PFSP-WT assets/instances/ --vnd --srz --best --in --ex --tran
 clean:
 	rm bin/*.o PFSP-WT

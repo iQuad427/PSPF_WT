@@ -15,16 +15,20 @@ State VariableNeighbourhoodDescent::execute(PfspInstance& instance) {
     State solution = generateState(instance);
     State backup;
 
-    cout << "Initial : ";
-    for (int i = 1; i <= instance.getNbJob(); i++)
-        cout << solution[i] << " ";
-    cout << endl;
+    int nbOfNeighbourhoods = stateModifications.size();
+    int currentNeighbourhood = 0;
+    State (*modification) (State, int, int);
 
-    for (State (*modification) (State, int, int) : stateModifications) {
-        do {
-            backup = solution;
-            solution = improveState(solution, modification, instance);
-        } while (!equal(backup.begin(), backup.end(), solution.begin()));
+    while (currentNeighbourhood < nbOfNeighbourhoods) {
+        modification = stateModifications[currentNeighbourhood];
+        backup = solution;
+        solution = improveState(solution, modification, instance);
+
+        if (equal(backup.begin(), backup.end(), solution.begin())) {
+            currentNeighbourhood++;
+        } else {
+            currentNeighbourhood = 0;
+        }
     }
 
     return solution;

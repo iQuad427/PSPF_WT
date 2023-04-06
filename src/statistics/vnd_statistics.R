@@ -20,11 +20,22 @@ for (algo in files.vnd) {
   instance.cost <- 100 * (mean.result$Score - best.known$Value) / best.known$Value
 
   if (grepl(".*srz.*", basename(algo))) {
-    file.ii.ins <- "out/ii/ii-first-srz-ins"
-    file.ii.ex <- "out/ii/ii-first-srz-ex"
+    if (grepl(".*first.*", basename(algo))) {
+      file.ii.ins <- "out/ii/ii-first-srz-ins"
+      file.ii.ex <- "out/ii/ii-first-srz-ex"
+    } else if (grepl(".*best.*", basename(algo))) {
+      file.ii.ins <- "out/ii/ii-best-srz-ins"
+      file.ii.ex <- "out/ii/ii-best-srz-ex"
+    }
   } else if (grepl(".*rnd.*", basename(algo))) {
-    file.ii.ins <- "out/ii/ii-first-rnd-ins"
-    file.ii.ex <- "out/ii/ii-first-rnd-ex"
+    if (grepl(".*first.*", basename(algo))) {
+      file.ii.ins <- "out/ii/ii-first-rnd-ins"
+      file.ii.ex <- "out/ii/ii-first-rnd-ex"
+    } else if (grepl(".*best.*", basename(algo))) {
+      file.ii.ins <- "out/ii/ii-best-rnd-ins"
+      file.ii.ex <- "out/ii/ii-best-rnd-ex"
+    }
+
   }
 
   ii.ins <- read.table(file.ii.ins, sep=" ", header=TRUE)
