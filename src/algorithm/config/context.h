@@ -31,13 +31,13 @@ private:
     string path;
     int algorithm;
     int initial;
-    int neighbour;
-    vector<int> pivots;
+    int pivot;
+    vector<int> neighbourhoods;
 public:
     State (*initialisation) (PfspInstance&);
-    State (*neighbourhood) (State, State (*) (State, int, int), PfspInstance&);
-    State (*pivotingII) (State, int, int);
-    vector<State (*) (State, int, int)> pivotingVND;
+    State (*pivoting) (State, State (*) (State, int, int), PfspInstance&);
+    State (*neighbourhoodII) (State, int, int);
+    vector<State (*) (State, int, int)> neighbourhoodVND;
 
     Context();
     ~Context();
@@ -45,15 +45,15 @@ public:
     string getPath();
     int getAlgorithm();
     int getInitial();
-    int getNeighbour();
-    vector<int> getPivots();
+    int getPivot();
+    vector<int> getNeighbourhoods();
 
     void setAlgorithm(int algo);
     void setInputDirectory(char* path);
     void setInitialisation(char* config);
-    void setNeighbourhood(char* config);
-    void setPivotingII(char* config);
-    void setPivotingVND(char* config[]);
+    void setPivoting(char* config);
+    void setNeighbourhoodII(char* config);
+    void setNeighbourhoodVND(char* config[]);
 };
 
 

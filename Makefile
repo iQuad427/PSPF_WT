@@ -14,12 +14,12 @@ init:
 	g++ -std=c++17 -O3 -c ./src/algorithm/operators/initialisation/random_permutation.cpp -o bin/random_permutation.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/operators/initialisation/simplified_rz.cpp -o bin/simplified_rz.o
 pivots:
-	g++ -std=c++17 -O3 -c ./src/algorithm/operators/pivoting/exchange.cpp -o bin/exchange.o
-	g++ -std=c++17 -O3 -c ./src/algorithm/operators/pivoting/insert.cpp -o bin/insert.o
-	g++ -std=c++17 -O3 -c ./src/algorithm/operators/pivoting/transpose.cpp -o bin/transpose.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/operators/neighbourhood/exchange.cpp -o bin/exchange.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/operators/neighbourhood/insert.cpp -o bin/insert.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/operators/neighbourhood/transpose.cpp -o bin/transpose.o
 neighbours:
-	g++ -std=c++17 -O3 -c ./src/algorithm/operators/neighbourhood/best_improvement.cpp -o bin/best_improvement.o
-	g++ -std=c++17 -O3 -c ./src/algorithm/operators/neighbourhood/first_improvement.cpp -o bin/first_improvement.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/operators/pivoting/best_improvement.cpp -o bin/best_improvement.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/operators/pivoting/first_improvement.cpp -o bin/first_improvement.o
 context:
 	g++ -std=c++17 -O3 -c ./src/algorithm/config/context.cpp -o bin/context.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/solution.cpp -o bin/solution.o

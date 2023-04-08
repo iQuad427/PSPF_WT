@@ -25,14 +25,14 @@ int main(int argc, char *argv[]) {
      *      - will execute on all files of the input (sorted in alphabetical order)
      *      - output per algorithm combination on independent data files
      *      - output per size of instances
-     *  - algorithm (either iterative improvement or variable neighbourhood descent)
+     *  - algorithm (either iterative improvement or variable pivoting descent)
      *      - initialisation
-     *      - neighbourhood
      *      - pivoting
+     *      - neighbourhood
      *
      * Output file name :
-     *  - ii-initialisation-neighbourhood-pivoting-instance_size
-     *  - vnd-initialisation-neighbourhood-pivoting_order-instance_size
+     *  - ii-initialisation-pivoting-neighbourhood-instance_size
+     *  - vnd-initialisation-pivoting-pivoting_order-instance_size
      *      example : ii-random-first-exchange-20_50
      *      example : vnd-random-first-transpose_exchange_insert-20_50
      *
@@ -141,8 +141,8 @@ State executeVariableNeighbourhoodDescent(PfspInstance& instance, Context contex
 
     algorithm.configure(
             context.initialisation,
-            context.neighbourhood,
-            context.pivotingVND
+            context.pivoting,
+            context.neighbourhoodVND
     );
 
     return algorithm.execute(instance);
@@ -153,8 +153,8 @@ State executeIterativeImprovement(PfspInstance& instance, Context context) {
 
     algorithm.configure(
             context.initialisation,
-            context.neighbourhood,
-            context.pivotingII
+            context.pivoting,
+            context.neighbourhoodII
     );
 
     return algorithm.execute(instance);
@@ -169,17 +169,17 @@ Context parseArguments(int argc, char* argv[]) {
 
         context.setAlgorithm(II);
         context.setInitialisation(argv[3]); // --rand or --srz
-        context.setNeighbourhood(argv[4]); // --first or --best
-        context.setPivotingII(argv[5]); // --tran or --ex or --in
+        context.setPivoting(argv[4]); // --first or --best
+        context.setNeighbourhoodII(argv[5]); // --tran or --ex or --in
 
     } else if (!(((string) argv[2]).compare("--vnd"))) {
 
         context.setAlgorithm(VND);
         context.setInitialisation(argv[3]); // --rand or --srz
-        context.setNeighbourhood(argv[4]); // --first or --best
+        context.setPivoting(argv[4]); // --first or --best
 
         char* pivots[] = {argv[5], argv[6], argv[7]};
-        context.setPivotingVND(pivots); // sequence of --tran/--ex/--in
+        context.setNeighbourhoodVND(pivots); // sequence of --tran/--ex/--in
     }
 
     return context;
@@ -209,7 +209,7 @@ string buildOutputFileNameFromContext(Context context) {
             break;
     }
 
-    switch (context.getNeighbour()) {
+    switch (context.getPivot()) {
         case BEST:
             fileName += "-best";
             break;
@@ -227,7 +227,7 @@ string buildOutputFileNameFromContext(Context context) {
             break;
     }
 
-    for (int pivot : context.getPivots()) {
+    for (int pivot : context.getNeighbourhoods()) {
         switch (pivot) {
             case TRANSPOSE:
                 fileName += "-tran";

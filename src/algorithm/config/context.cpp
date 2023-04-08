@@ -7,8 +7,8 @@
 Context::Context() {
     this->algorithm = -1;
     this->initial = 0;
-    this->neighbour = 0;
-    this->pivots = vector<int>();
+    this->pivot = 0;
+    this->neighbourhoods = vector<int>();
 }
 
 Context::~Context() {}
@@ -25,12 +25,12 @@ int Context::getInitial() {
     return this->initial;
 }
 
-int Context::getNeighbour() {
-    return this->neighbour;
+int Context::getPivot() {
+    return this->pivot;
 }
 
-vector<int> Context::getPivots() {
-    return this->pivots;
+vector<int> Context::getNeighbourhoods() {
+    return this->neighbourhoods;
 }
 
 void Context::setAlgorithm(int algo) {
@@ -53,42 +53,42 @@ void Context::setInitialisation(char* config) {
     return;
 }
 
-void Context::setNeighbourhood(char* config) {
+void Context::setPivoting(char* config) {
     if (!(((string) config).compare("--best"))) {
-        this->neighbour = BEST;
-        this->neighbourhood = bestImprovement;
+        this->pivot = BEST;
+        this->pivoting = bestImprovement;
     } else if (!(((string) config).compare("--first"))) {
-        this->neighbour = FIRST;
-        this->neighbourhood = firstImprovement;
+        this->pivot = FIRST;
+        this->pivoting = firstImprovement;
     }
     return;
 }
-void Context::setPivotingII(char* config) {
+void Context::setNeighbourhoodII(char* config) {
     if (!(((string) config).compare("--tran"))) {
-        this->pivots.insert(pivots.end(), TRANSPOSE);
-        this->pivotingII = transpose;
+        this->neighbourhoods.insert(neighbourhoods.end(), TRANSPOSE);
+        this->neighbourhoodII = transpose;
     } else if (!(((string) config).compare("--in"))) {
-        this->pivots.insert(pivots.end(), INSERT);
-        this->pivotingII = insert;
+        this->neighbourhoods.insert(neighbourhoods.end(), INSERT);
+        this->neighbourhoodII = insert;
     } else if (!(((string) config).compare("--ex"))) {
-        this->pivots.insert(pivots.end(), EXCHANGE);
-        this->pivotingII = exchange;
+        this->neighbourhoods.insert(neighbourhoods.end(), EXCHANGE);
+        this->neighbourhoodII = exchange;
     }
     return;
 }
 
-void Context::setPivotingVND(char* config[]) {
+void Context::setNeighbourhoodVND(char* config[]) {
 
     for (int i = 0; i < 3; i++) {
         if (!(((string) config[i]).compare("--tran"))) {
-            this->pivots.insert(pivots.end(), TRANSPOSE);
-            this->pivotingVND.insert(pivotingVND.end(), transpose);
+            this->neighbourhoods.insert(neighbourhoods.end(), TRANSPOSE);
+            this->neighbourhoodVND.insert(neighbourhoodVND.end(), transpose);
         } else if (!(((string) config[i]).compare("--ex"))) {
-            this->pivots.insert(pivots.end(), EXCHANGE);
-            this->pivotingVND.insert(pivotingVND.end(), exchange);
+            this->neighbourhoods.insert(neighbourhoods.end(), EXCHANGE);
+            this->neighbourhoodVND.insert(neighbourhoodVND.end(), exchange);
         } else if (!(((string) config[i]).compare("--in"))) {
-            this->pivots.insert(pivots.end(), INSERT);
-            this->pivotingVND.insert(pivotingVND.end(), insert);
+            this->neighbourhoods.insert(neighbourhoods.end(), INSERT);
+            this->neighbourhoodVND.insert(neighbourhoodVND.end(), insert);
         }
     }
     return;
