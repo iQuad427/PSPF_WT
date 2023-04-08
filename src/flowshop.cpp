@@ -142,7 +142,7 @@ State executeVariableNeighbourhoodDescent(PfspInstance& instance, Context contex
     algorithm.configure(
             context.initialisation,
             context.pivoting,
-            context.neighbourhoodVND
+            context.neighbours
     );
 
     return algorithm.execute(instance);
@@ -154,7 +154,7 @@ State executeIterativeImprovement(PfspInstance& instance, Context context) {
     algorithm.configure(
             context.initialisation,
             context.pivoting,
-            context.neighbourhoodII
+            context.neighbours[0]
     );
 
     return algorithm.execute(instance);
@@ -170,7 +170,9 @@ Context parseArguments(int argc, char* argv[]) {
         context.setAlgorithm(II);
         context.setInitialisation(argv[3]); // --rand or --srz
         context.setPivoting(argv[4]); // --first or --best
-        context.setNeighbourhoodII(argv[5]); // --tran or --ex or --in
+
+        char* pivots[] = {argv[5]};
+        context.setNeighbourhoods(1, pivots); // --tran or --ex or --in
 
     } else if (!(((string) argv[2]).compare("--vnd"))) {
 
@@ -179,7 +181,7 @@ Context parseArguments(int argc, char* argv[]) {
         context.setPivoting(argv[4]); // --first or --best
 
         char* pivots[] = {argv[5], argv[6], argv[7]};
-        context.setNeighbourhoodVND(pivots); // sequence of --tran/--ex/--in
+        context.setNeighbourhoods(3, pivots); // sequence of --tran/--ex/--in
     }
 
     return context;

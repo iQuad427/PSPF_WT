@@ -36,8 +36,7 @@ private:
 public:
     State (*initialisation) (PfspInstance&);
     State (*pivoting) (State, State (*) (State, int, int), PfspInstance&);
-    State (*neighbourhoodII) (State, int, int);
-    vector<State (*) (State, int, int)> neighbourhoodVND;
+    vector<State (*) (State, int, int)> neighbours;
 
     Context();
     ~Context();
@@ -52,8 +51,7 @@ public:
     void setInputDirectory(char* path);
     void setInitialisation(char* config);
     void setPivoting(char* config);
-    void setNeighbourhoodII(char* config);
-    void setNeighbourhoodVND(char* config[]);
+    void setNeighbourhoods(int nbOfNeighbourhoods, char* config[]);
 };
 
 
