@@ -122,6 +122,13 @@ Solution executeInstance(Context context, char* path) {
     return Solution(path, instance.getNbJob(), weightedTardiness);
 }
 
+/**
+ * Verify some basic stats about the solution to ensure its validity
+ *
+ * @param solution the state to test
+ * @param instance the instance it tries to solve
+ * @return whether the state given as input is valid or not
+ */
 bool solutionIsValid(State solution, PfspInstance& instance) {
     int n = instance.getNbJob();
 
@@ -136,6 +143,13 @@ bool solutionIsValid(State solution, PfspInstance& instance) {
     return size && value;
 }
 
+/**
+ * Create, configure and run a VariableNeighbourhoodDescent object using the specifications given as Context
+ *
+ * @param instance instance on which we run the algorithm
+ * @param context specifications of the algorithm
+ * @return the result of the Variable Neighbourhood Descent algorithm with given specifications
+ */
 State executeVariableNeighbourhoodDescent(PfspInstance& instance, Context context) {
     VariableNeighbourhoodDescent algorithm;
 
@@ -148,6 +162,13 @@ State executeVariableNeighbourhoodDescent(PfspInstance& instance, Context contex
     return algorithm.execute(instance);
 }
 
+/**
+ * Create, configure and run a IterativeImprovement object using the specifications given as Context
+ *
+ * @param instance instance on which we run the algorithm
+ * @param context specifications of the algorithm
+ * @return the result of the Iterative Improvement algorithm with given specifications
+ */
 State executeIterativeImprovement(PfspInstance& instance, Context context) {
     IterativeImprovement algorithm;
 
@@ -160,6 +181,14 @@ State executeIterativeImprovement(PfspInstance& instance, Context context) {
     return algorithm.execute(instance);
 }
 
+/**
+ * Creates a Context object containing the algorithm to run and its specifications
+ * using the arguments given through the command line to the main function
+ *
+ * @param argc number of arguments
+ * @param argv array containing the arguments
+ * @return a Context object corresponding to the algorithm specifications given as argument
+ */
 Context parseArguments(int argc, char* argv[]) {
     Context context;
 
@@ -187,6 +216,12 @@ Context parseArguments(int argc, char* argv[]) {
     return context;
 }
 
+/**
+ * Return a list of path to instances files from the context
+ *
+ * @param context a Context object, containing the path to directory of instances to test the specs on
+ * @return the list of input files located at input path given by the context
+ */
 vector<string> getInputFiles(Context context) {
     vector<string> files = vector<string>();
 
@@ -194,11 +229,18 @@ vector<string> getInputFiles(Context context) {
         files.insert(files.end(), (string) entry.path());
     }
 
+    // used to ensure that the instances are always read in the same order
     sort(files.begin(), files.end());
 
     return files;
 }
 
+/**
+ * Function to automatically define the output file name for given experiment from its context
+ *
+ * @param context context of the experiment (algo specifications and input directory)
+ * @return
+ */
 string buildOutputFileNameFromContext(Context context) {
     string fileName = "out/";
 
