@@ -1,13 +1,29 @@
-//
-// Created by Quentin Roels on 08/04/2023.
-//
 
 #ifndef PSPF_WT_MEMETIC_ALGORITHM_H
 #define PSPF_WT_MEMETIC_ALGORITHM_H
 
+#include "../../../pfsp/pfspinstance.h"
+#include "../iterative/iterative_improvement.h"
 
-class memetic_algorithm {
+using namespace std;
 
+typedef vector<int> State;
+
+class MemeticAlgorithm {
+private:
+    IterativeImprovement subsidiaryLocalSearch;
+    vector<State> (*initialisation) (int populationSize, PfspInstance&);
+    vector<State> (*recombination) (vector<State> population, PfspInstance&);
+    vector<State> (*mutation) (vector<State> population, PfspInstance&);
+    vector<State> (*selection) (vector<State> population, PfspInstance&);
+public:
+    MemeticAlgorithm();
+    ~MemeticAlgorithm();
+
+    void configure(
+            ini
+    );
+    vector<int> execute(PfspInstance&);
 };
 
 

@@ -5,7 +5,6 @@
 #ifndef PSPF_WT_ITERATIVE_IMPROVEMENT_H
 #define PSPF_WT_ITERATIVE_IMPROVEMENT_H
 
-#include <vector>
 #include "../../../pfsp/pfspinstance.h"
 
 using namespace std;

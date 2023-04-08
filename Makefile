@@ -6,6 +6,7 @@ all: parts init pivots neighbours context algo
 		bin/first_improvement.o bin/best_improvement.o \
 		bin/insert.o bin/exchange.o bin/transpose.o \
 		bin/iterative_improvement.o bin/variable_neighbourhood_descent.o \
+		bin/memetic_algorithm.o \
 		-o PFSP-WT
 parts:
 	g++ -std=c++17 -O3 -c ./src/flowshop.cpp -o bin/flowshop.o
@@ -26,8 +27,9 @@ context:
 algo:
 	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/iterative/iterative_improvement.cpp -o bin/iterative_improvement.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/vnd/variable_neighbourhood_descent.cpp -o bin/variable_neighbourhood_descent.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/genetic/memetic_algorithm.cpp ./bin/iterative_improvement.o -o bin/memetic_algorithm.o
 run: all
-	#./PFSP-WT assets/instances/ --ii --rand --best --in
-	./PFSP-WT assets/instances/ --vnd --srz --best --in --ex --tran
+	./PFSP-WT assets/instances/ --ii --rand --best --in
+	#./PFSP-WT assets/instances/ --vnd --srz --best --in --ex --tran
 clean:
 	rm bin/*.o PFSP-WT

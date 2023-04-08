@@ -1,13 +1,20 @@
-//
-// Created by Quentin Roels on 08/04/2023.
-//
 
 #ifndef PSPF_WT_ANT_COLONY_OPTIMIZATION_H
 #define PSPF_WT_ANT_COLONY_OPTIMIZATION_H
 
+#include "../../../pfsp/pfspinstance.h"
 
-class ant_colony_optimization {
+using namespace std;
 
+typedef vector<int> State;
+
+class AntColonyOptimization {
+public:
+    AntColonyOptimization();
+    ~AntColonyOptimization();
+
+    void configure();
+    vector<int> execute(PfspInstance&);
 };
 
 

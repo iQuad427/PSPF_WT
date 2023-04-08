@@ -5,8 +5,6 @@
 #ifndef PSPF_WT_VARIABLE_NEIGHBOURHOOD_DESCENT_H
 #define PSPF_WT_VARIABLE_NEIGHBOURHOOD_DESCENT_H
 
-
-#include <vector>
 #include "../../../pfsp/pfspinstance.h"
 
 using namespace std;
