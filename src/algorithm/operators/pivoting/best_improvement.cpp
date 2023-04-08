@@ -1,6 +1,3 @@
-//
-// Created by Quentin Roels on 04/03/2023.
-//
 
 #include "../operators.h"
 
@@ -15,7 +12,7 @@ vector<int> bestNeighbour(vector<int> state, vector<int> (*yield) (vector<int>, 
     for (int i = 1; i < state.size(); i++) {
         for (int j = i + 1; j < state.size(); j++) {
             if ((current = instance.computeWT(yield(state, i, j))) < best) {
-                result = yield(state, i, j); // TODO: non-sense for transposition, j is not used, useless iterations
+                result = yield(state, i, j);
                 best = current;
             }
         }

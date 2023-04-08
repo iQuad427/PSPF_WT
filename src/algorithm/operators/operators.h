@@ -1,16 +1,12 @@
- //
-// Created by Quentin Roels on 19/03/2023.
-//
 
 #ifndef PSPF_WT_OPERATORS_H
 #define PSPF_WT_OPERATORS_H
 
-#include <vector>
 #include "../../pfsp/pfspinstance.h"
 
-std::vector<int> exchange(std::vector<int> state, int i, int j);
-std::vector<int> insert(std::vector<int> state, int i, int j);
-std::vector<int> transpose(std::vector<int> state, int i, int j);
+vector<int> exchange(vector<int> state, int i, int j);
+vector<int> insert(vector<int> state, int i, int j);
+vector<int> transpose(vector<int> state, int i, int j);
 
 vector<int> bestImprovement(vector<int> state, vector<int> (*yield) (vector<int>, int, int), PfspInstance& instance);
 vector<int> bestNeighbour(vector<int> state, vector<int> (*yield) (vector<int>, int, int), PfspInstance& instance);

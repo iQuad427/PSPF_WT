@@ -12,6 +12,14 @@ using namespace std;
 
 typedef vector<int> State;
 
+/**
+ * Class implementing the skeleton for any basic Iterative Improvement algorithm
+ *
+ * Requires :
+ *  - One initialisation method
+ *  - One pivoting method
+ *  - One neighbourhood definition
+ */
 class IterativeImprovement {
 private:
     State (*generateState) (PfspInstance&);

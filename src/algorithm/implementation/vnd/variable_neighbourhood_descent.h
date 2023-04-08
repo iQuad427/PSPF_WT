@@ -11,6 +11,14 @@
 
 using namespace std;
 
+/**
+ * Class implementing the skeleton for any basic Variable Neighbourhood Descent algorithm
+ *
+ * Requires :
+ *  - One initialisation method
+ *  - One pivoting method
+ *  - Any number of neighbourhood definition
+ */
 typedef vector<int> State;
 
 class VariableNeighbourhoodDescent {

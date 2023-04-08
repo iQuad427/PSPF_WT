@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void getWeightedCompletionTime(vector <pair<double, int> > &WCT, PfspInstance &instance) {
+void getWeightedCompletionTime(vector<pair<double, int>> &WCT, PfspInstance &instance) {
     for (int i = 1; i < instance.getNbJob() + 1; i++) {
         long int sum = 0;
         for (int j = 1; j < instance.getNbMac(); j++) {
@@ -39,7 +39,6 @@ vector<int> getBestWCT(vector<int> partial, int newJob, PfspInstance& instance) 
             solution = current;
             best = score;
         }
-
     }
 
     return solution;
@@ -47,7 +46,7 @@ vector<int> getBestWCT(vector<int> partial, int newJob, PfspInstance& instance) 
 
 
 vector<int> simplifiedRzHeuristic(PfspInstance &instance) {
-    vector < pair < double, int > > WCT = vector < pair < double, int > > (instance.getNbJob() + 1);
+    vector<pair<double, int>> WCT = vector<pair<double, int>>(instance.getNbJob() + 1);
     getWeightedCompletionTime(WCT, instance);
 
     sort(WCT.begin(), WCT.end());

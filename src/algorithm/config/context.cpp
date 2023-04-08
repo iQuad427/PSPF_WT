@@ -42,6 +42,11 @@ void Context::setInputDirectory(char* path) {
     this->path = path;
 }
 
+/**
+ * Set up the initialisation operator for II and/or VND algorithms
+ *
+ * @param config one of the strings corresponding to possible initialisation (random or simple RZ heuristic)
+ */
 void Context::setInitialisation(char* config) {
     if (!(((string) config).compare("--rand"))) {
         this->initial = RANDOM;
@@ -53,6 +58,11 @@ void Context::setInitialisation(char* config) {
     return;
 }
 
+/**
+ * Set up the pivoting operator for II and/or VND algorithms
+ *
+ * @param config one of the strings corresponding to possible pivoting rules (best or first improvement)
+ */
 void Context::setPivoting(char* config) {
     if (!(((string) config).compare("--best"))) {
         this->pivot = BEST;
@@ -64,6 +74,12 @@ void Context::setPivoting(char* config) {
     return;
 }
 
+/**
+ * Set up the different neighbourhoods for II/VND algorithms
+ *
+ * @param nbOfNeighbourhoods permits for generalization of VNDs, as many neighbourhoods as wanted (1 being a simple II)
+ * @param config one of the strings corresponding to possible pivoting rules (transpose, insert or exchange)
+ */
 void Context::setNeighbourhoods(int nbOfNeighbourhoods, char* config[]) {
 
     for (int i = 0; i < nbOfNeighbourhoods; i++) {

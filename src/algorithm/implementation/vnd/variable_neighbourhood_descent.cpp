@@ -11,6 +11,12 @@ void VariableNeighbourhoodDescent::configure(
     this->stateModifications = stateModifications;
 }
 
+/**
+ * Method for executing the Variable Neighbourhood Descent local search
+ *
+ * @param instance containing all required information, such as the Job matrix
+ * @return a local optima for the given algorithm specifications
+ */
 State VariableNeighbourhoodDescent::execute(PfspInstance& instance) {
     State solution = generateState(instance);
     State backup;
@@ -30,6 +36,11 @@ State VariableNeighbourhoodDescent::execute(PfspInstance& instance) {
             currentNeighbourhood = 0;
         }
     }
+
+    cout << "Solution: ";
+    for (int i = 1; i <= instance.getNbJob(); i++)
+        cout << solution[i] << " ";
+    cout << endl;
 
     return solution;
 }

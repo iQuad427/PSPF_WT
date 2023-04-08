@@ -10,7 +10,9 @@
 
 using namespace std;
 
-// TODO: add solution class to Makefile
+/**
+ * Simple data class to return easily all the required information about the end of an algorithm.
+ */
 class Solution {
 private:
     vector<int> state;
