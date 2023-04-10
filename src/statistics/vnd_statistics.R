@@ -66,7 +66,7 @@ write.table(vnd.result, file=paste0("src/statistics/results/vnd/", "vnd_improvem
 
 # b) Comparison between VND algorithms
 
-# i. simple_rz vs random
+# i. simple_rz vs. random
 
 # Retrieve the test data
 files.rand <- list.files(path="src/statistics/stats/algo", pattern="vnd.*rnd.*", full.names=TRUE, recursive=TRUE)
@@ -110,7 +110,7 @@ write.table(wilcox.result.init.50, file="src/statistics/results/vnd/init_wilcox_
 write.table(wilcox.result.init.100, file="src/statistics/results/vnd/init_wilcox_100", row.names=FALSE, quote=FALSE)
 
 
-# ii. tran -> ins -> ex vs tran -> ex -> ins
+# ii. tran -> ins -> ex vs. tran -> ex -> ins
 
 # Retrieve the test data
 files.ins.ex <- list.files(path="src/statistics/stats/algo", pattern="vnd.*tran-ins-ex.*", full.names=TRUE, recursive=TRUE)
@@ -154,7 +154,7 @@ write.table(wilcox.result.neigh.50, file="src/statistics/results/vnd/neigh_wilco
 write.table(wilcox.result.neigh.100, file="src/statistics/results/vnd/neigh_wilcox_100", row.names=FALSE, quote=FALSE)
 
 
-# iii. best vd first
+# iii. best vs. first
 
 # Retrieve the test data
 files.best <- list.files(path="src/statistics/stats/algo", pattern="vnd.*best.*", full.names=TRUE, recursive=TRUE)
