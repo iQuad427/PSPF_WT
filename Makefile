@@ -1,4 +1,4 @@
-all: parts init pivots neighbours context algo
+all: parts init pivots neighbours genetic context algo
 	g++ -std=c++17 -O3 -c ./src/flowshop.cpp -o bin/flowshop.o
 	g++ -std=c++17 -O3 \
 		bin/flowshop.o bin/solution.o bin/context.o bin/pfspinstance.o \
@@ -21,6 +21,9 @@ pivots:
 neighbours:
 	g++ -std=c++17 -O3 -c ./src/algorithm/operators/pivoting/best_improvement.cpp -o bin/best_improvement.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/operators/pivoting/first_improvement.cpp -o bin/first_improvement.o
+genetic:
+	g++ -std=c++17 -O3 -c ./src/algorithm/operators/genetic/initialisation/random_initialisation.cpp -o bin/random_initialisation.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/operators/genetic/mutation/random_exchange.cpp -o bin/random_exchange.o
 context:
 	g++ -std=c++17 -O3 -c ./src/algorithm/config/context.cpp -o bin/context.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/solution.cpp -o bin/solution.o

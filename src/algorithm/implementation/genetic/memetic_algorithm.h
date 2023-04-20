@@ -8,20 +8,32 @@
 using namespace std;
 
 typedef vector<int> State;
+typedef vector<State> Population;
+typedef std::chrono::high_resolution_clock Clock;
+typedef std::chrono::time_point<Clock> Time;
 
 class MemeticAlgorithm {
 private:
+    float mutationRate;
+    int populationSize;
+
     IterativeImprovement subsidiaryLocalSearch;
-    vector<State> (*initialisation) (int populationSize, PfspInstance&);
-    vector<State> (*recombination) (vector<State> population, PfspInstance&);
-    vector<State> (*mutation) (vector<State> population, PfspInstance&);
-    vector<State> (*selection) (vector<State> population, PfspInstance&);
+    Population (*initialisation) (PfspInstance& instance, int populationSize);
+    Population (*recombination) (PfspInstance& instance, Population population);
+    Population (*mutation) (PfspInstance& instance, Population population, float mutationRate);
+    Population (*selection) (PfspInstance& instance, Population population);
+
+    Population applySubsidiaryLocalSearch(PfspInstance& instance, Population population);
+    bool termination(Time start, Time current);
 public:
     MemeticAlgorithm();
     ~MemeticAlgorithm();
 
-    void configure();
-    vector<int> execute(PfspInstance&);
+    void configure(
+            int populationSize,
+
+    );
+    State execute(PfspInstance&);
 };
 
 
