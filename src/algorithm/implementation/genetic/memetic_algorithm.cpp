@@ -7,4 +7,6 @@ MemeticAlgorithm::~MemeticAlgorithm() {}
 
 void MemeticAlgorithm::configure() {}
 
-vector<int> MemeticAlgorithm::execute(PfspInstance& instance) {}
+vector<int> MemeticAlgorithm::execute(PfspInstance& instance) {
+    return;
+}

@@ -5,6 +5,8 @@ Context::Context() {
     this->algorithm = -1;
     this->initial = 0;
     this->pivot = 0;
+    this->tabuTenure = 0;
+    this->maxTime = 0;
     this->neighbourhoods = vector<int>();
 }
 
@@ -24,6 +26,14 @@ int Context::getInitial() {
 
 int Context::getPivot() {
     return this->pivot;
+}
+
+int Context::getTabuTenure(){
+    return this->tabuTenure;
+}
+
+double Context::getMaxTime() {
+    return this->maxTime;
 }
 
 vector<int> Context::getNeighbourhoods() {
@@ -60,6 +70,15 @@ void Context::setPivoting(char* config) {
     }
     return;
 }
+
+void Context::setTabuTenure(int tenure) {
+    this->tabuTenure = tenure;
+}
+
+void Context::setMaxTime(double time) {
+    this->maxTime = time;
+}
+
 void Context::setNeighbourhoodII(char* config) {
     if (!(((string) config).compare("--tran"))) {
         this->neighbourhoods.insert(neighbourhoods.end(), TRANSPOSE);

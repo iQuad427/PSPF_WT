@@ -20,9 +20,7 @@ public:
     MemeticAlgorithm();
     ~MemeticAlgorithm();
 
-    void configure(
-            ini
-    );
+    void configure();
     vector<int> execute(PfspInstance&);
 };
 

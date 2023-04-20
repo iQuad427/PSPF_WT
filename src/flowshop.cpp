@@ -2,6 +2,7 @@
 #include <fstream>
 #include <filesystem>
 #include <chrono>
+#include <cstdlib>
 
 #include "algorithm/config/context.h"
 #include "algorithm/operators/operators.h"
@@ -13,6 +14,7 @@ Solution executeInstance(Context context, char* path);
 bool solutionIsValid(State solution, PfspInstance& instance);
 State executeVariableNeighbourhoodDescent(PfspInstance& instance, Context context);
 State executeIterativeImprovement(PfspInstance& instance, Context context);
+State executeTabuSearch(PfspInstance& instance, Context context);
 Context parseArguments(int argc, char* argv[]);
 vector<string> getInputFiles(Context context);
 string buildOutputFileNameFromContext(Context context);
@@ -50,7 +52,8 @@ int main(int argc, char *argv[]) {
 void launchExperiment(Context context, vector<string> files) {
     switch (context.getAlgorithm()) {
         case II:
-        case VND: {
+        case VND:
+        case TABU: {
             string fileName = buildOutputFileNameFromContext(context);
             cout << "Experiment: " << fileName << endl;
 
@@ -65,7 +68,7 @@ void launchExperiment(Context context, vector<string> files) {
                 /* initialize random seed */
                 srand(time(NULL));
 
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 1; i++) {
 
                     auto start = chrono::high_resolution_clock::now();
 
@@ -83,9 +86,7 @@ void launchExperiment(Context context, vector<string> files) {
                 }
 
             }
-
             resultFile.close();
-
             break;
         }
         default:
@@ -110,6 +111,8 @@ Solution executeInstance(Context context, char* path) {
         solution = executeVariableNeighbourhoodDescent(instance, context);
     } else if (context.getAlgorithm() == II) {
         solution = executeIterativeImprovement(instance, context);
+    } else if (context.getAlgorithm() == TABU) {
+        solution = executeTabuSearch(instance, context);
     } else {
         cout << "Error: wrong context parameter, " << context.getAlgorithm() << endl;
         throw;
@@ -160,6 +163,19 @@ State executeIterativeImprovement(PfspInstance& instance, Context context) {
     return algorithm.execute(instance);
 }
 
+State executeTabuSearch(PfspInstance& instance, Context context) {
+    TabuSearch algorithm;
+
+    algorithm.configure(
+            context.getMaxTime(),
+            context.getTabuTenure(),
+            context.initialisation,
+            context.neighbourhoodII
+    );
+
+    return algorithm.execute(instance);
+}
+
 Context parseArguments(int argc, char* argv[]) {
     Context context;
 
@@ -180,6 +196,15 @@ Context parseArguments(int argc, char* argv[]) {
 
         char* pivots[] = {argv[5], argv[6], argv[7]};
         context.setNeighbourhoodVND(pivots); // sequence of --tran/--ex/--in
+
+    } else if (!(((string) argv[2]).compare("--tabu"))) {
+
+        context.setAlgorithm(TABU);
+        context.setInitialisation(argv[3]); // --rand or --srz
+        context.setNeighbourhoodII(argv[4]); // --ex or --ins or --tran
+        context.setTabuTenure(atoi(argv[5])); // integer for tabu tenure
+        context.setMaxTime(atof(argv[6])); // double for max computation time
+
     }
 
     return context;
@@ -207,6 +232,8 @@ string buildOutputFileNameFromContext(Context context) {
         case VND:
             fileName += "vnd/vnd";
             break;
+        case TABU:
+            fileName += "tabu/tabu";
     }
 
     switch (context.getPivot()) {
@@ -240,5 +267,12 @@ string buildOutputFileNameFromContext(Context context) {
                 break;
         }
     }
+
+    switch (context.getAlgorithm()) {
+        case TABU:
+            fileName += "-tenure-" + to_string(context.getTabuTenure());
+            fileName += "-max_time-" + to_string(context.getMaxTime());
+    }
+
     return fileName;
 }

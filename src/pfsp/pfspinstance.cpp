@@ -237,8 +237,10 @@ long int PfspInstance::computeWT(vector<int> sol) {
     }
 
     wt = 0;
+    int tardiness;
     for (int j = 1; j < nbJob + 1; j++) {
-        wt += (previousMachineEndTime[j] - getDueDate(sol[j]) > 0 ? previousMachineEndTime[j] : 0) * priority[sol[j]];
+        tardiness = previousMachineEndTime[j] - getDueDate(sol[j]);
+        wt += (tardiness > 0 ? tardiness : 0) * priority[sol[j]];
     }
 
     return wt;

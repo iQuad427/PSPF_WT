@@ -5,7 +5,7 @@ all: parts init pivots neighbours context algo
 		bin/random_permutation.o bin/simplified_rz.o \
 		bin/first_improvement.o bin/best_improvement.o \
 		bin/insert.o bin/exchange.o bin/transpose.o \
-		bin/iterative_improvement.o bin/variable_neighbourhood_descent.o \
+		bin/iterative_improvement.o bin/variable_neighbourhood_descent.o bin/tabu_search.o \
 		bin/memetic_algorithm.o \
 		-o PFSP-WT
 parts:
@@ -27,9 +27,10 @@ context:
 algo:
 	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/iterative/iterative_improvement.cpp -o bin/iterative_improvement.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/vnd/variable_neighbourhood_descent.cpp -o bin/variable_neighbourhood_descent.o
-	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/genetic/memetic_algorithm.cpp ./bin/iterative_improvement.o -o bin/memetic_algorithm.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/tabu/tabu_search.cpp -o bin/tabu_search.o
 run: all
-	./PFSP-WT assets/instances/ --ii --rand --best --in
+	#./PFSP-WT assets/instances/ --ii --rand --best --in
 	#./PFSP-WT assets/instances/ --vnd --srz --best --in --ex --tran
+	./PFSP-WT assets/instances/ --tabu --srz --ex 5 5.0
 clean:
 	rm bin/*.o PFSP-WT

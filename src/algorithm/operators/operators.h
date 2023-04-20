@@ -13,10 +13,32 @@ std::vector<int> insert(std::vector<int> state, int i, int j);
 std::vector<int> transpose(std::vector<int> state, int i, int j);
 
 vector<int> bestImprovement(vector<int> state, vector<int> (*yield) (vector<int>, int, int), PfspInstance& instance);
-vector<int> bestNeighbour(vector<int> state, vector<int> (*yield) (vector<int>, int, int), PfspInstance& instance);
+vector<int> bestImprovement(
+        vector<int> state,
+        vector<int> (*yield) (vector<int>, int, int),
+        PfspInstance& instance,
+        bool (*condition) (vector<int>)
+);
+vector<int> bestNeighbour(
+        vector<int> state,
+        vector<int> (*yield) (vector<int>, int, int),
+        bool (*condition) (vector<int>),
+        PfspInstance& instance
+);
 
 vector<int> firstImprovement(vector<int> state, vector<int> (*yield) (vector<int>, int, int), PfspInstance& instance);
-vector<int> betterNeighbour(vector<int> state, vector<int> (*yield) (vector<int>, int, int), PfspInstance& instance);
+vector<int> firstImprovement(
+        vector<int> state,
+        vector<int> (*yield) (vector<int>, int, int),
+        bool (*condition) (vector<int>),
+        PfspInstance& instance
+);
+vector<int> betterNeighbour(
+        vector<int> state,
+        vector<int> (*yield) (vector<int>, int, int),
+        bool (*condition) (vector<int>),
+        PfspInstance& instance
+);
 
 vector<int> simplifiedRzHeuristic(PfspInstance &instance);
 vector<int> getBestWCT(vector<int> partial, int newJob, PfspInstance& instance);

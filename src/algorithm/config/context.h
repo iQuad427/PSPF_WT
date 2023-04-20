@@ -9,6 +9,7 @@
 #define ALL 0
 #define II 1
 #define VND 2
+#define TABU 3
 
 #define RANDOM 1
 #define SIMPLE_RZ 2
@@ -29,6 +30,8 @@ private:
     int algorithm;
     int initial;
     int pivot;
+    int tabuTenure;
+    double maxTime;
     vector<int> neighbourhoods;
 public:
     State (*initialisation) (PfspInstance&);
@@ -43,12 +46,16 @@ public:
     int getAlgorithm();
     int getInitial();
     int getPivot();
+    int getTabuTenure();
+    double getMaxTime();
     vector<int> getNeighbourhoods();
 
     void setAlgorithm(int algo);
     void setInputDirectory(char* path);
     void setInitialisation(char* config);
     void setPivoting(char* config);
+    void setTabuTenure(int tenure);
+    void setMaxTime(double time);
     void setNeighbourhoodII(char* config);
     void setNeighbourhoodVND(char* config[]);
 };
