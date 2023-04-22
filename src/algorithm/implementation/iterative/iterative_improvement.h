@@ -22,7 +22,8 @@ public:
             State (*improveState) (State, State (*) (State, int, int), PfspInstance&),
             State (*modifyState) (State, int, int)
     );
-    vector<int> execute(PfspInstance&);
+    vector<int> execute(PfspInstance& instance, State candidate);
+    vector<int> execute(PfspInstance& instance);
 };
 
 

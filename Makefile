@@ -5,8 +5,10 @@ all: parts init pivots neighbours genetic context algo
 		bin/random_permutation.o bin/simplified_rz.o \
 		bin/first_improvement.o bin/best_improvement.o \
 		bin/insert.o bin/exchange.o bin/transpose.o \
-		bin/iterative_improvement.o bin/variable_neighbourhood_descent.o bin/tabu_search.o \
-		bin/memetic_algorithm.o \
+		bin/iterative_improvement.o bin/variable_neighbourhood_descent.o \
+		bin/tabu_search.o bin/memetic_algorithm.o \
+		bin/random_initialisation.o bin/random_exchange.o bin/rank_selection.o bin/utils.o \
+		bin/rank_recombination.o bin/one_point_crossover.o \
 		-o PFSP-WT
 parts:
 	g++ -std=c++17 -O3 -c ./src/flowshop.cpp -o bin/flowshop.o
@@ -24,6 +26,10 @@ neighbours:
 genetic:
 	g++ -std=c++17 -O3 -c ./src/algorithm/operators/genetic/initialisation/random_initialisation.cpp -o bin/random_initialisation.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/operators/genetic/mutation/random_exchange.cpp -o bin/random_exchange.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/operators/genetic/selection/rank_selection.cpp -o bin/rank_selection.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/operators/genetic/utils.cpp -o bin/utils.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/operators/genetic/recombination/rank_recombination.cpp -o bin/rank_recombination.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/operators/genetic/recombination/crossovers/one_point_crossover.cpp -o bin/one_point_crossover.o
 context:
 	g++ -std=c++17 -O3 -c ./src/algorithm/config/context.cpp -o bin/context.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/solution.cpp -o bin/solution.o
@@ -31,9 +37,11 @@ algo:
 	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/iterative/iterative_improvement.cpp -o bin/iterative_improvement.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/vnd/variable_neighbourhood_descent.cpp -o bin/variable_neighbourhood_descent.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/tabu/tabu_search.cpp -o bin/tabu_search.o
+	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/genetic/memetic_algorithm.cpp -o bin/memetic_algorithm.o
 run: all
 	#./PFSP-WT assets/instances/ --ii --rand --best --in
 	#./PFSP-WT assets/instances/ --vnd --srz --best --in --ex --tran
-	./PFSP-WT assets/instances/ --tabu --srz --ex 5 5.0
+	#./PFSP-WT assets/instances/ --tabu --srz --ex 5 5.0
+	./PFSP-WT assets/instances/ --gen --rand-init --rank-comb --rand-mut --rank-select 100 0.5 10
 clean:
 	rm bin/*.o PFSP-WT

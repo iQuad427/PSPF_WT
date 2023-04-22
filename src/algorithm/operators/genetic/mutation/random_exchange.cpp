@@ -11,8 +11,8 @@ State randomExchange(PfspInstance& instance, State individual) {
 }
 
 
-vector<State> randomExchangeMutation(PfspInstance& instance, vector<State> population, float mutationRate) {
-    vector<State> newPopulation = vector<State>(population.size());
+Population randomExchangeMutation(PfspInstance& instance, Population population, float mutationRate) {
+    Population newPopulation = vector<State>(population.size());
 
     for (int i = 0; i < population.size(); i++) {
         float rng = (float) (rand() % 100) / (float) 100;

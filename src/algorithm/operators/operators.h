@@ -8,6 +8,7 @@
 
 using namespace std;
 typedef vector<int> State;
+typedef vector<State> Population;
 
 /** NEIGHBOURHOODS */
 std::vector<int> exchange(std::vector<int> state, int i, int j);
@@ -33,10 +34,18 @@ int generateRndPosition(int min, int max);
 
 /** GENETIC */
 // initialisation
-vector<State> randomPopulationInitialisation(PfspInstance& instance, int populationSize);
+Population randomPopulationInitialisation(PfspInstance& instance, int populationSize);
 // mutation
-vector<State> randomExchangeMutation(PfspInstance& instance, vector<State> population, float mutationRate);
+Population randomExchangeMutation(PfspInstance& instance, Population population, float mutationRate);
 // recombination
-
+Population meritocraticRecombination(PfspInstance& instance, Population population, int populationSize);
+// selection
+Population rankSelection(PfspInstance& instance, Population population, int populationSize);
+// crossovers
+State onePointCrossover(PfspInstance& instance, State candidate1, State candidate2);
+State twoPointCrossover(PfspInstance& instance, State candidate1, State candidate2);
+State uniformCrossover(PfspInstance& instance, State candidate1, State candidate2);
+// utils
+State repair(PfspInstance& instance, State candidate1, State candidate2);
 
 #endif //PSPF_WT_OPERATORS_H

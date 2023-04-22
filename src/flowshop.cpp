@@ -6,6 +6,7 @@
 
 #include "algorithm/config/context.h"
 #include "algorithm/operators/operators.h"
+#include <set>
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -15,6 +16,7 @@ bool solutionIsValid(State solution, PfspInstance& instance);
 State executeVariableNeighbourhoodDescent(PfspInstance& instance, Context context);
 State executeIterativeImprovement(PfspInstance& instance, Context context);
 State executeTabuSearch(PfspInstance& instance, Context context);
+State executeMemeticAlgorithm(PfspInstance& instance, Context context);
 Context parseArguments(int argc, char* argv[]);
 vector<string> getInputFiles(Context context);
 string buildOutputFileNameFromContext(Context context);
@@ -53,7 +55,8 @@ void launchExperiment(Context context, vector<string> files) {
     switch (context.getAlgorithm()) {
         case II:
         case VND:
-        case TABU: {
+        case TABU:
+        case GEN: {
             string fileName = buildOutputFileNameFromContext(context);
             cout << "Experiment: " << fileName << endl;
 
@@ -113,6 +116,8 @@ Solution executeInstance(Context context, char* path) {
         solution = executeIterativeImprovement(instance, context);
     } else if (context.getAlgorithm() == TABU) {
         solution = executeTabuSearch(instance, context);
+    } else if (context.getAlgorithm() == GEN) {
+        solution = executeMemeticAlgorithm(instance, context);
     } else {
         cout << "Error: wrong context parameter, " << context.getAlgorithm() << endl;
         throw;
@@ -176,7 +181,24 @@ State executeTabuSearch(PfspInstance& instance, Context context) {
     return algorithm.execute(instance);
 }
 
+State executeMemeticAlgorithm(PfspInstance& instance, Context context) {
+    MemeticAlgorithm algorithm;
+
+    algorithm.configure(
+            context.getPopulationSize(),
+            context.getMutationRate(),
+            context.getMaxTime(),
+            context.initialisationPB,
+            context.recombination,
+            context.mutation,
+            context.selection
+    );
+
+    return algorithm.execute(instance);
+}
+
 Context parseArguments(int argc, char* argv[]) {
+    // TODO : verify number of arguments at each step and return the error made in config
     Context context;
 
     context.setInputDirectory(argv[1]); // input directory path
@@ -204,6 +226,19 @@ Context parseArguments(int argc, char* argv[]) {
         context.setNeighbourhoodII(argv[4]); // --ex or --ins or --tran
         context.setTabuTenure(atoi(argv[5])); // integer for tabu tenure
         context.setMaxTime(atof(argv[6])); // double for max computation time
+
+    } else if (!(((string) argv[2]).compare("--gen"))) {
+
+        context.setAlgorithm(GEN);
+
+        context.setInitialisationPB(argv[3]);
+        context.setRecombination(argv[4]);
+        context.setMutation(argv[5]);
+        context.setSelection(argv[6]);
+
+        context.setPopulationSize(atoi(argv[7]));
+        context.setMutationRate(atof(argv[8]));
+        context.setMaxTime(atof(argv[9]));
 
     }
 
@@ -234,6 +269,10 @@ string buildOutputFileNameFromContext(Context context) {
             break;
         case TABU:
             fileName += "tabu/tabu";
+            break;
+        case GEN:
+            fileName += "gen/gen";
+            break;
     }
 
     switch (context.getPivot()) {
@@ -271,7 +310,13 @@ string buildOutputFileNameFromContext(Context context) {
     switch (context.getAlgorithm()) {
         case TABU:
             fileName += "-tenure-" + to_string(context.getTabuTenure());
-            fileName += "-max_time-" + to_string(context.getMaxTime());
+            fileName += "-max_time-" + to_string((int) context.getMaxTime());
+            break;
+        case GEN:
+            fileName += "-pop_size-" + to_string(context.getPopulationSize());
+            fileName += "-mut_rate-" + to_string(context.getMutationRate());
+            fileName += "-max_time-" + to_string((int) context.getMaxTime());
+            break;
     }
 
     return fileName;

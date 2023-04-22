@@ -4,6 +4,7 @@
 
 #include "../../../pfsp/pfspinstance.h"
 #include "../iterative/iterative_improvement.h"
+#include "../../operators/operators.h"
 
 using namespace std;
 
@@ -16,12 +17,13 @@ class MemeticAlgorithm {
 private:
     float mutationRate;
     int populationSize;
+    double maxTime;
 
     IterativeImprovement subsidiaryLocalSearch;
     Population (*initialisation) (PfspInstance& instance, int populationSize);
-    Population (*recombination) (PfspInstance& instance, Population population);
+    Population (*recombination) (PfspInstance& instance, Population population, int populationSize);
     Population (*mutation) (PfspInstance& instance, Population population, float mutationRate);
-    Population (*selection) (PfspInstance& instance, Population population);
+    Population (*selection) (PfspInstance& instance, Population population, int populationSize);
 
     Population applySubsidiaryLocalSearch(PfspInstance& instance, Population population);
     bool termination(Time start, Time current);
@@ -31,7 +33,12 @@ public:
 
     void configure(
             int populationSize,
-
+            float mutationRate,
+            double maxTime,
+            Population (*initialisation) (PfspInstance& instance, int populationSize),
+            Population (*recombination) (PfspInstance& instance, Population population, int populationSize),
+            Population (*mutation) (PfspInstance& instance, Population population, float mutationRate),
+            Population (*selection) (PfspInstance& instance, Population population, int populationSize)
     );
     State execute(PfspInstance&);
 };

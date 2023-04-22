@@ -28,8 +28,32 @@ int Context::getPivot() {
     return this->pivot;
 }
 
+int Context::getInitialPB() {
+    return this->initPB;
+}
+
+int Context::getRecombination() {
+    return this->recombine;
+}
+
+int Context::getSelection() {
+    return this->select;
+}
+
+int Context::getMutation() {
+    return this->mutate;
+}
+
 int Context::getTabuTenure(){
     return this->tabuTenure;
+}
+
+float Context::getMutationRate() {
+    return this->mutationRate;
+}
+
+int Context::getPopulationSize() {
+    return this->populationSize;
 }
 
 double Context::getMaxTime() {
@@ -106,6 +130,46 @@ void Context::setNeighbourhoodVND(char* config[]) {
             this->neighbourhoods.insert(neighbourhoods.end(), INSERT);
             this->neighbourhoodVND.insert(neighbourhoodVND.end(), insert);
         }
+    }
+    return;
+}
+
+void Context::setPopulationSize(int populationSize) {
+    this->populationSize = populationSize;
+}
+
+void Context::setMutationRate(float mutationRate) {
+    this->mutationRate = mutationRate;
+}
+
+void Context::setInitialisationPB(char* config) {
+    if (!(((string) config).compare("--rand-init"))) {
+        this->initPB = RAND_INIT;
+        this->initialisationPB = randomPopulationInitialisation;
+    }
+    return;
+}
+
+void Context::setRecombination(char* config) {
+    if (!(((string) config).compare("--rank-comb"))) {
+        this->recombine = RANK_COMB;
+        this->recombination = meritocraticRecombination;
+    }
+    return;
+}
+
+void Context::setSelection(char* config) {
+    if (!(((string) config).compare("--rank-select"))) {
+        this->select = RANK_SELECT;
+        this->selection = rankSelection;
+    }
+    return;
+}
+
+void Context::setMutation(char* config) {
+    if (!(((string) config).compare("--rand-mut"))) {
+        this->mutate = RAND_EX_MUT;
+        this->mutation = randomExchangeMutation;
     }
     return;
 }

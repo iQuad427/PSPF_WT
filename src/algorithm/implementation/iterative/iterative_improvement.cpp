@@ -14,8 +14,8 @@ void IterativeImprovement::configure(
     this->modifyState = modifyState;
 }
 
-State IterativeImprovement::execute(PfspInstance& instance) {
-    State solution = generateState(instance);
+State IterativeImprovement::execute(PfspInstance& instance, State candidate) {
+    State solution = candidate;
     State backup;
 
     do {
@@ -24,4 +24,8 @@ State IterativeImprovement::execute(PfspInstance& instance) {
     } while (!equal(backup.begin(), backup.end(), solution.begin()));
 
     return solution;
+}
+
+State IterativeImprovement::execute(PfspInstance& instance) {
+    return execute(instance, generateState(instance));
 }
