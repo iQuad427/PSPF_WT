@@ -39,9 +39,9 @@ algo:
 	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/tabu/tabu_search.cpp -o bin/tabu_search.o
 	g++ -std=c++17 -O3 -c ./src/algorithm/implementation/genetic/memetic_algorithm.cpp -o bin/memetic_algorithm.o
 run: all
-	#./PFSP-WT assets/instances/ --ii --rand --best --in
-	#./PFSP-WT assets/instances/ --vnd --srz --best --in --ex --tran
-	#./PFSP-WT assets/instances/ --tabu --srz --ex 5 5.0
-	./PFSP-WT assets/instances/ --gen --rand-init --rank-comb --rand-mut --rank-select 100 0.5 10
+	#./PFSP-WT 1 assets/instances/size-all --ii --rand --best --in
+	#./PFSP-WT 1 assets/instances/size-all --vnd --srz --best --in --ex --tran
+	#./PFSP-WT 1 assets/instances/size-all --tabu --srz --ex 20 5.0
+	./PFSP-WT 1 assets/instances/size-all --gen --rand-init --rank-comb --rand-mut --rank-select --tran 100 0.5 30
 clean:
 	rm bin/*.o PFSP-WT

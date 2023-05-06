@@ -38,7 +38,8 @@ public:
             Population (*initialisation) (PfspInstance& instance, int populationSize),
             Population (*recombination) (PfspInstance& instance, Population population, int populationSize),
             Population (*mutation) (PfspInstance& instance, Population population, float mutationRate),
-            Population (*selection) (PfspInstance& instance, Population population, int populationSize)
+            Population (*selection) (PfspInstance& instance, Population population, int populationSize),
+            State (*modifyState) (State, int, int)
     );
     State execute(PfspInstance&);
 };

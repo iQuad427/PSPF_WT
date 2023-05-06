@@ -6,8 +6,8 @@ best.known <- read.table("assets/solutions/Best-known Values", sep=" ", header=T
 # 1. which initial solution is preferable?
 
 # Retrieve the test data
-files.rand <- list.files(path="src/statistics/stats/algo", pattern="ii.*rnd.*", full.names=TRUE, recursive=TRUE)
-files.srz <- list.files(path="src/statistics/stats/algo", pattern="ii.*srz.*", full.names=TRUE, recursive=TRUE)
+files.rand <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="ii.*rnd.*", full.names=TRUE, recursive=TRUE)
+files.srz <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="ii.*srz.*", full.names=TRUE, recursive=TRUE)
 
 if (length(files.rand) != length(files.srz)) {
   stop("Must have same amount of file in each batch to compare one by one")
@@ -43,8 +43,8 @@ for (i in seq_along(files.rand)) {
   ))
 }
 
-write.table(wilcox.result.init.50, file="src/statistics/results/statistical_tests/init_wilcox_50", row.names=FALSE, quote=FALSE)
-write.table(wilcox.result.init.100, file="src/statistics/results/statistical_tests/init_wilcox_100", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.init.50, file="src/statistics/implementation-1/results/statistical_tests/init_wilcox_50", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.init.100, file="src/statistics/implementation-1/results/statistical_tests/init_wilcox_100", row.names=FALSE, quote=FALSE)
 
 
 
@@ -52,8 +52,8 @@ write.table(wilcox.result.init.100, file="src/statistics/results/statistical_tes
 # 2. which pivoting rule generates better quality solutions and which is faster?
 
 # Retrieve the test data
-files.best <- list.files(path="src/statistics/stats/algo", pattern="ii.*best.*", full.names=TRUE, recursive=TRUE)
-files.first <- list.files(path="src/statistics/stats/algo", pattern="ii.*first.*", full.names=TRUE, recursive=TRUE)
+files.best <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="ii.*best.*", full.names=TRUE, recursive=TRUE)
+files.first <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="ii.*first.*", full.names=TRUE, recursive=TRUE)
 
 if (length(files.best) != length(files.first)) {
   stop("Must have same amount of file in each batch to compare one by one")
@@ -104,8 +104,8 @@ for (i in seq_along(files.best)) {
   ))
 }
 
-write.table(wilcox.result.pivot.50, file="src/statistics/results/statistical_tests/pivot_wilcox_50", row.names=FALSE, quote=FALSE)
-write.table(wilcox.result.pivot.100, file="src/statistics/results/statistical_tests/pivot_wilcox_100", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.pivot.50, file="src/statistics/implementation-1/results/statistical_tests/pivot_wilcox_50", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.pivot.100, file="src/statistics/implementation-1/results/statistical_tests/pivot_wilcox_100", row.names=FALSE, quote=FALSE)
 
 
 
@@ -113,9 +113,9 @@ write.table(wilcox.result.pivot.100, file="src/statistics/results/statistical_te
 # 3. which neighborhood generates better quality solution and what computation time is required to reach local optima?
 
 # Retrieve the test data
-files.isrt <- list.files(path="src/statistics/stats/algo", pattern="ii.*ins.*", full.names=TRUE, recursive=TRUE)
-files.exch <- list.files(path="src/statistics/stats/algo", pattern="ii.*ex.*", full.names=TRUE, recursive=TRUE)
-files.tran <- list.files(path="src/statistics/stats/algo", pattern="ii.*tran.*", full.names=TRUE, recursive=TRUE)
+files.isrt <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="ii.*ins.*", full.names=TRUE, recursive=TRUE)
+files.exch <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="ii.*ex.*", full.names=TRUE, recursive=TRUE)
+files.tran <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="ii.*tran.*", full.names=TRUE, recursive=TRUE)
 
 if (length(files.isrt) != length(files.exch) || length(files.isrt) != length(files.tran)) {
   stop("Must have same amount of file in each batch to compare one by one")
@@ -211,6 +211,6 @@ for (i in seq_along(files.isrt)) {
   ))
 }
 
-write.table(wilcox.result.neighbour.50, file="src/statistics/results/statistical_tests/neighbour_wilcox_50", row.names=FALSE, quote=FALSE)
-write.table(wilcox.result.neighbour.100, file="src/statistics/results/statistical_tests/neighbour_wilcox_100", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.neighbour.50, file="src/statistics/implementation-1/results/statistical_tests/neighbour_wilcox_50", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.neighbour.100, file="src/statistics/implementation-1/results/statistical_tests/neighbour_wilcox_100", row.names=FALSE, quote=FALSE)
 

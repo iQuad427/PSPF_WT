@@ -12,13 +12,14 @@ void MemeticAlgorithm::configure(
         Population (*initialisation) (PfspInstance& instance, int populationSize),
         Population (*recombination) (PfspInstance& instance, Population population, int populationSize),
         Population (*mutation) (PfspInstance& instance, Population population, float mutationRate),
-        Population (*selection) (PfspInstance& instance, Population population, int populationSize)
+        Population (*selection) (PfspInstance& instance, Population population, int populationSize),
+        State (*modifyState) (State, int, int)
         ) {
 
     subsidiaryLocalSearch.configure(
             randomPermutation,
             firstImprovement,
-            exchange
+            modifyState
     );
 
     this->populationSize = populationSize;
@@ -49,29 +50,18 @@ bool MemeticAlgorithm::termination(Time start, Time current) {
 }
 
 State MemeticAlgorithm::execute(PfspInstance& instance) {
-    Time start = Clock::now();
-
-    cout << "starting" << endl;
-
     Population population = initialisation(instance, this->populationSize);
-
-    cout << "initialized" << endl;
-
     population = applySubsidiaryLocalSearch(instance, population);
-
-    cout << "ended local search" << endl;
 
     Population runningPopulation; // contain all the individuals currently under investigation
     Population recombinedPopulation; // contain individuals that have been recombined (population size)
     Population mutatedPopulation; // contain individuals that have been mutated (two times population size)
 
-    do {
-        cout << "start of iteration" << endl;
+    Time start = Clock::now();
 
+    do {
         recombinedPopulation = recombination(instance, population, this->populationSize);
         recombinedPopulation = applySubsidiaryLocalSearch(instance, recombinedPopulation);
-
-        cout << "recombined" << endl;
 
         runningPopulation = population;
         runningPopulation.insert(runningPopulation.end(), recombinedPopulation.begin(), recombinedPopulation.end());
@@ -79,15 +69,9 @@ State MemeticAlgorithm::execute(PfspInstance& instance) {
         mutatedPopulation = mutation(instance, runningPopulation, this->mutationRate);
         mutatedPopulation = applySubsidiaryLocalSearch(instance, mutatedPopulation);
 
-        cout << "mutated" << endl;
-
         runningPopulation.insert(runningPopulation.end(), mutatedPopulation.begin(), mutatedPopulation.end());
-
         population = selection(instance, runningPopulation, this->populationSize);
-
-        cout << "selected" << endl;
-
     } while (!termination(start, Clock::now()));
 
-    return population[0]; 
+    return population[0]; // best rated individual in the population (after selection, decreasing order of quality)
 }

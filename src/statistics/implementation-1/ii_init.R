@@ -25,14 +25,14 @@ for (algo in files.rand) {
   rand.result <- rbind(rand.result, result)
 
   # Create output files for the results (separated per algorithm)
-  write.table(result, file=paste0("src/statistics/stats/init/random/", basename(algo)), row.names=FALSE, quote=FALSE)
+  write.table(result, file=paste0("src/statistics/implementation-1/stats/init/random/", basename(algo)), row.names=FALSE, quote=FALSE)
 }
 
 # Average the values for solution derivation and execution time w.r.t to the size of the instance
 rand.result <- aggregate(cbind(Deviation, Time) ~ Algo + Size, data=rand.result, FUN=mean)
 
 # Create output files for the results
-write.table(rand.result, file=paste0("src/statistics/results/init/", "result_random"), row.names=FALSE, quote=FALSE)
+write.table(rand.result, file=paste0("src/statistics/implementation-1/results/init/", "result_random"), row.names=FALSE, quote=FALSE)
 
 for (algo in files.srz) {
   # Get algorithm results
@@ -49,11 +49,11 @@ for (algo in files.srz) {
   srz.result <- rbind(srz.result, result)
 
   # Create output files for the results (separated per algorithm)
-  write.table(result, file=paste0("src/statistics/stats/init/simple_rz/", basename(algo)), row.names=FALSE, quote=FALSE)
+  write.table(result, file=paste0("src/statistics/implementation-1/stats/init/simple_rz/", basename(algo)), row.names=FALSE, quote=FALSE)
 }
 
 # Average the values for solution derivation and execution time w.r.t to the size of the instance
 srz.result <- aggregate(cbind(Deviation, Time) ~ Algo + Size, data=srz.result, FUN=mean)
 
 # Create output files for the results
-write.table(srz.result, file=paste0("src/statistics/results/init/", "result_srz"), row.names=FALSE, quote=FALSE)
+write.table(srz.result, file=paste0("src/statistics/implementation-1/results/init/", "result_srz"), row.names=FALSE, quote=FALSE)

@@ -19,31 +19,43 @@ void TabuSearch::configure(
 
 void TabuSearch::updateHistory(State candidate) {
     History::iterator it = this->history.begin();
+    vector<State> toErase = vector<State>();
 
+    bool found = false;
     while (it != this->history.end()) {
         if (it->first == candidate) {
             it->second = this->tabuTenure;
+            found = true;
         } else {
             it->second = it->second - 1;
-            if (it->second == 0) {
-                this->history.erase(it->first);
+            if (it->second <= 0) {
+                toErase.insert(toErase.end(), it->first);
             }
         }
         it++;
     }
+
+    for (State free : toErase) {
+        this->history.erase(free);
+    }
+
+    if (!found && this->tabuTenure > 0) {
+        this->history.insert(pair<State, int>(candidate, this->tabuTenure));
+    }
 }
 
+/**
+ * Simple best improvement loop that take the tabu condition into account
+ */
 State TabuSearch::nextState(PfspInstance& instance, State state) {
-    State result = state;
-    long int best = instance.computeWT(state);
+    State result = modifyState(state, 1, 2);
+    long int best = instance.computeWT(result);
     long int current;
 
     for (int i = 1; i < state.size(); i++) {
         for (int j = i + 1; j < state.size(); j++) {
             State newState = modifyState(state, i, j);
-//            cout << condition(newState) << endl;
             if ((current = instance.computeWT(newState)) < best && condition(newState)) {
-//                cout << "improvement" << endl;
                 result = newState;
                 best = current;
             }
@@ -74,14 +86,22 @@ bool TabuSearch::termination(Time start, Time current) {
 
 vector<int> TabuSearch::execute(PfspInstance& instance) {
     Time start = Clock::now();
-
     State solution = generateState(instance);
-    State backup;
+
+    State best_solution = solution;
+    long int best_score = instance.computeWT(best_solution);
+    long int new_score;
+
     do {
-        backup = solution;
         solution = nextState(instance, solution);
+
+        if ((new_score = instance.computeWT(solution)) < best_score) {
+            best_score = new_score;
+            best_solution = solution;
+        }
+
         updateHistory(solution);
     } while (!termination(start, Clock::now())); // && !equal(backup.begin(), backup.end(), solution.begin())
 
-    return solution;
+    return best_solution;
 }
