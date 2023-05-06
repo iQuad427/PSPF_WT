@@ -38,11 +38,11 @@ if __name__ == '__main__':
                     os.system(command)
 
         elif algo == "--tabu":
-            command = f"./PFSP-WT {iteration} {input_directory} --tabu --rand --ex 100 60"
+            command = f"./PFSP-WT {iteration} {input_directory} --tabu --rand --ex 100 120"
             print(command)
             os.system(command)
 
         elif algo == "--gen":
-            command = f"./PFSP-WT {iteration} {input_directory} --gen --rand-init --rank-comb --rand-mut --rank-select --ex 200 0.7 30"
+            command = f"./PFSP-WT {iteration} {input_directory} --gen --rand-init --rank-comb --rand-mut --rank-select --ex 100 0.7 120"
             print(command)
             os.system(command)
