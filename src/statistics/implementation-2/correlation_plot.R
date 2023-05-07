@@ -33,8 +33,6 @@ for (algo in c(tabu.files, gen.files)) {
 tabu <- read.table("src/statistics/implementation-2/stats/comparison/tabu-rnd-ex-tenure-100-max_time-120", header=TRUE)
 gen <- read.table("src/statistics/implementation-2/stats/comparison/gen-ex-pop_size-100-mut_rate-0.700000-max_time-120", header=TRUE)
 
-tabu; gen
-
 result <- data.frame(
   "instances"=tabu$Instance,
   "instances.size"=tabu$Size,
@@ -43,6 +41,7 @@ result <- data.frame(
 )
 
 p.value <- wilcox.test(tabu$Deviation, gen$Deviation, paired=TRUE)$p.value
+p.value
 
 tabu.mean <- aggregate(Deviation ~ Size, data=tabu, FUN=mean)
 gen.mean <- aggregate(Deviation ~ Size, data=gen, FUN=mean)
@@ -60,11 +59,32 @@ plot(tabu.50, gen.50, pch=16, col="blue",
      xlab="Tabu Search", ylab = "Memetic Algorithm",
      main = "Correlation Plot of Deviation (size = 50)"
 )
+fit.50 <- lm(gen.50 ~ tabu.50, data=data.frame(cbind(tabu.50, gen.50)))
+abline(fit.50, col = "black")
 
 plot(tabu.100, gen.100, pch=16, col="red",
      xlab="Tabu Search", ylab = "Memetic Algorithm",
      main = "Correlation Plot of Deviation (size = 100)"
 )
+fit.100 <- lm(gen.100 ~ tabu.100, data=data.frame(cbind(tabu.100, gen.100)))
+abline(fit.100, col = "black")
+
+# BOTH ON SAME GRAPH
+
+plot(tabu.50, gen.50, pch=16, col="blue",
+     xlab="Tabu Search", ylab = "Memetic Algorithm",
+     main = "Correlation Plot of Deviation",
+     xlim = c(max(tabu.50, tabu.100), min(tabu.50, tabu.100)),
+     ylim = c(max(gen.50, gen.100), min(gen.50, gen.100))
+)
+
+points(tabu.100, gen.100, pch=16, col="red")
+
+data.frame(cbind(tabu$Deviation, gen$Deviation))
+fit <- lm(X2 ~ X1, data=data.frame(cbind(tabu$Deviation, gen$Deviation)))
+abline(fit, col = "green")
+abline(fit.50, col = "blue")
+abline(fit.100, col = "red")
 
 # add a legend to the plot
-# legend("topright", legend = c("Instance of size 50","Instances of size 100"), col = c("red","green"), pch=16)
+legend("topright", legend = c("Instance of size 50","Instance of size 100","Both isntances"), col = c("blue","red", "green"), pch=16)
