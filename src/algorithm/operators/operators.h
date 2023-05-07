@@ -11,9 +11,9 @@ typedef vector<int> State;
 typedef vector<State> Population;
 
 /** NEIGHBOURHOODS */
-std::vector<int> exchange(std::vector<int> state, int i, int j);
-std::vector<int> insert(std::vector<int> state, int i, int j);
-std::vector<int> transpose(std::vector<int> state, int i, int j);
+vector<int> exchange(vector<int> state, int i, int j);
+vector<int> insert(vector<int> state, int i, int j);
+vector<int> transpose(vector<int> state, int i, int j);
 
 /** PIVOTING*/
 // best improvement
@@ -43,8 +43,6 @@ Population meritocraticRecombination(PfspInstance& instance, Population populati
 Population rankSelection(PfspInstance& instance, Population population, int populationSize);
 // crossovers
 State onePointCrossover(PfspInstance& instance, State candidate1, State candidate2);
-State twoPointCrossover(PfspInstance& instance, State candidate1, State candidate2);
-State uniformCrossover(PfspInstance& instance, State candidate1, State candidate2);
 // utils
 State repair(PfspInstance& instance, State candidate1, State candidate2);
 

@@ -1,7 +1,7 @@
 
 #include "../operators.h"
 
-/*
+/**
  * Transpose the element at index i from one place
  */
 std::vector<int> transpose(std::vector<int> state, int i, int j) {

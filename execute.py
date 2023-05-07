@@ -26,7 +26,7 @@ if __name__ == '__main__':
                         print(command)
                         os.system(command)
 
-        elif algo == "--vnd":
+        if algo == "--vnd":
             for init in initialisations:
                 for improve in improvements:
                     command = f"./PFSP-WT {iteration} {input_directory} --vnd {init} {improve} --tran --in --ex"

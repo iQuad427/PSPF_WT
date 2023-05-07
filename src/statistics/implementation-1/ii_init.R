@@ -3,10 +3,11 @@
 # Retrieve best known values
 best.known <- read.table("assets/solutions/Best-known Values", sep=" ", header=TRUE)
 
-# Retrieve the tests data
+# Retrieve the test data for random and srz initialisation separately
 files.rand <- list.files(path="out/ii/", pattern="ii.*rnd.*", full.names=TRUE, recursive=TRUE)
 files.srz <- list.files(path="out/ii/", pattern="ii.*srz.*", full.names=TRUE, recursive=TRUE)
 
+# Define result data frames
 rand.result <- data.frame(matrix(nrow=0, ncol=4, dimnames=list(NULL, c("Algo", "Size", "Deviation", "Time"))))
 srz.result <- data.frame(matrix(nrow=0, ncol=4, dimnames=list(NULL, c("Algo", "Size", "Deviation", "Time"))))
 
@@ -33,6 +34,7 @@ rand.result <- aggregate(cbind(Deviation, Time) ~ Algo + Size, data=rand.result,
 
 # Create output files for the results
 write.table(rand.result, file=paste0("src/statistics/implementation-1/results/init/", "result_random"), row.names=FALSE, quote=FALSE)
+
 
 for (algo in files.srz) {
   # Get algorithm results

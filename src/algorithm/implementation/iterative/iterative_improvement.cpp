@@ -1,7 +1,3 @@
-//
-// Created by Quentin Roels on 04/03/2023.
-//
-
 #include "iterative_improvement.h"
 
 void IterativeImprovement::configure(
@@ -14,6 +10,12 @@ void IterativeImprovement::configure(
     this->modifyState = modifyState;
 }
 
+/**
+ * Method for executing the Iterative Improvement local search
+ *
+ * @param instance containing all required information, such as the Job matrix
+ * @return a local optima for the given algorithm specifications
+ */
 State IterativeImprovement::execute(PfspInstance& instance, State candidate) {
     State solution = candidate;
     State backup;

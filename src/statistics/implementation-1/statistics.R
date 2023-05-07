@@ -1,3 +1,5 @@
+# Script for automatically computing average derivations on all executions results
+
 # Retrieve best known values
 best.known <- read.table("assets/solutions/Best-known Values", sep=" ", header=TRUE)
 

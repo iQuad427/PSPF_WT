@@ -1,7 +1,7 @@
 
 #include "../operators.h"
 
-/*
+/**
  * Exchange element at index i and j
  */
 std::vector<int> exchange(std::vector<int> state, int i, int j) {

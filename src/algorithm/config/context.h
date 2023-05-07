@@ -49,6 +49,21 @@
 using namespace std;
 typedef vector<int> State;
 
+/**
+ * Class for easier configuration of the algorithms, used when parsing the arguments,
+ * contains all the information on the operators that one algorithm could need.
+ *
+ * Use :
+ *  - Set all required attributes of the object through predefined strings (when parsing)
+ *  - The Context object set up the corresponding functions in the correct fields by itself
+ *  - Use the created object as a container for the configuration of an algorithm
+ *
+ *  Note : also serves as a global include file for the main file
+ *      - includes all operators
+ *      - includes all algorithms
+ *      - includes all required classes
+ *    => prevents from circular dependencies
+ */
 class Context {
 private:
     // Generic
@@ -115,8 +130,7 @@ public:
     void setInputDirectory(char* path);
     void setInitialisation(char* config);
     void setPivoting(char* config);
-    void setNeighbourhoodII(char* config);
-    void setNeighbourhoodVND(char* config[]);
+    void setNeighbourhoods(int nbOfNeighbourhoods, char* config[]);
 
     void setInitialisationPB(char* config);
     void setRecombination(char* config);

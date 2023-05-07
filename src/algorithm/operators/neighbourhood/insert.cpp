@@ -1,7 +1,7 @@
 
 #include "../operators.h"
 
-/*
+/**
  * Insert element at index i after element at index j
  */
 std::vector<int> insert(std::vector<int> state, int i, int j) {
