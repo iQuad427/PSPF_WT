@@ -1,7 +1,3 @@
-//
-// Created by Quentin Roels on 04/03/2023.
-//
-
 #include "iterative_improvement.h"
 
 void IterativeImprovement::configure(
@@ -9,8 +5,8 @@ void IterativeImprovement::configure(
         State (*improveState) (State, State (*) (State, int, int), PfspInstance&),
         State (*modifyState) (State, int, int))
         {
-    this->improveState = improveState;
     this->generateState = generateState;
+    this->improveState = improveState;
     this->modifyState = modifyState;
 }
 
@@ -20,8 +16,8 @@ void IterativeImprovement::configure(
  * @param instance containing all required information, such as the Job matrix
  * @return a local optima for the given algorithm specifications
  */
-State IterativeImprovement::execute(PfspInstance& instance) {
-    State solution = generateState(instance);
+State IterativeImprovement::execute(PfspInstance& instance, State candidate) {
+    State solution = candidate;
     State backup;
 
     do {
@@ -29,10 +25,9 @@ State IterativeImprovement::execute(PfspInstance& instance) {
         solution = improveState(solution, modifyState, instance);
     } while (!equal(backup.begin(), backup.end(), solution.begin()));
 
-    cout << "Solution: ";
-    for (int i = 1; i <= instance.getNbJob(); i++)
-        cout << solution[i] << " ";
-    cout << endl;
-
     return solution;
+}
+
+State IterativeImprovement::execute(PfspInstance& instance) {
+    return execute(instance, generateState(instance));
 }

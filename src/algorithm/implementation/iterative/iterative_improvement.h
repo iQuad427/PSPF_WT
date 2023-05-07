@@ -5,7 +5,6 @@
 #ifndef PSPF_WT_ITERATIVE_IMPROVEMENT_H
 #define PSPF_WT_ITERATIVE_IMPROVEMENT_H
 
-#include <vector>
 #include "../../../pfsp/pfspinstance.h"
 
 using namespace std;
@@ -31,7 +30,8 @@ public:
             State (*improveState) (State, State (*) (State, int, int), PfspInstance&),
             State (*modifyState) (State, int, int)
     );
-    vector<int> execute(PfspInstance&);
+    vector<int> execute(PfspInstance& instance, State candidate);
+    vector<int> execute(PfspInstance& instance);
 };
 
 

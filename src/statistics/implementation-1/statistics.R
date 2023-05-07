@@ -21,12 +21,12 @@ for (algo in files) {
   result <- data.frame("Instance"=best.known$Instance, "Size"=mean.result$Size, "Deviation"=instance.cost, "Time"=mean.result$Time)
 
   # Create output files for the results (separated per algorithm)
-  file.create(paste0("src/statistics/stats/algo/", basename(algo)))
-  write.table(result, file=paste0("src/statistics/stats/algo/", basename(algo)), row.names=FALSE, quote=FALSE)
+  file.create(paste0("src/statistics/implementation-1/stats/algo/", basename(algo)))
+  write.table(result, file=paste0("src/statistics/implementation-1/stats/algo/", basename(algo)), row.names=FALSE, quote=FALSE)
 }
 
 # Get all the results from previous steps
-results <- list.files(path="src/statistics/stats/algo", full.names=TRUE, recursive=TRUE)
+results <- list.files(path="src/statistics/implementation-1/stats/algo", full.names=TRUE, recursive=TRUE)
 
 # Store algorithms name (same order as results files)
 algos <- vector(length=length(results))
@@ -55,5 +55,5 @@ for (i in seq_along(results)) {
 }
 
 # Store the results of the statistical tests in a file
-write.table(t_tests, file="src/statistics/results/algo/t_test", row.names=FALSE, quote=FALSE)
-write.table(wilcox_tests, file="src/statistics/results/algo/wilcox_test", row.names=FALSE, quote=FALSE)
+write.table(t_tests, file="src/statistics/implementation-1/results/algo/t_test", row.names=FALSE, quote=FALSE)
+write.table(wilcox_tests, file="src/statistics/implementation-1/results/algo/wilcox_test", row.names=FALSE, quote=FALSE)

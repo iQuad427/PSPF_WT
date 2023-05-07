@@ -62,15 +62,15 @@ for (algo in files.vnd) {
 vnd.result <- aggregate(. ~ Algo + Size, data=vnd.result, FUN=mean)
 
 # Create output files for the results
-write.table(vnd.result, file=paste0("src/statistics/results/vnd/", "vnd_improvement"), row.names=FALSE, quote=FALSE)
+write.table(vnd.result, file=paste0("src/statistics/implementation-1/results/vnd/", "vnd_improvement"), row.names=FALSE, quote=FALSE)
 
 # b) Comparison between VND algorithms
 
 # i. simple_rz vs. random
 
 # Retrieve the test data
-files.rand <- list.files(path="src/statistics/stats/algo", pattern="vnd.*rnd.*", full.names=TRUE, recursive=TRUE)
-files.srz <- list.files(path="src/statistics/stats/algo", pattern="vnd.*srz.*", full.names=TRUE, recursive=TRUE)
+files.rand <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="vnd.*rnd.*", full.names=TRUE, recursive=TRUE)
+files.srz <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="vnd.*srz.*", full.names=TRUE, recursive=TRUE)
 
 if (length(files.rand) != length(files.srz)) {
   stop("Must have same amount of file in each batch to compare one by one")
@@ -106,15 +106,15 @@ for (i in seq_along(files.rand)) {
   ))
 }
 
-write.table(wilcox.result.init.50, file="src/statistics/results/vnd/init_wilcox_50", row.names=FALSE, quote=FALSE)
-write.table(wilcox.result.init.100, file="src/statistics/results/vnd/init_wilcox_100", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.init.50, file="src/statistics/implementation-1/results/vnd/init_wilcox_50", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.init.100, file="src/statistics/implementation-1/results/vnd/init_wilcox_100", row.names=FALSE, quote=FALSE)
 
 
 # ii. tran -> ins -> ex vs. tran -> ex -> ins
 
 # Retrieve the test data
-files.ins.ex <- list.files(path="src/statistics/stats/algo", pattern="vnd.*tran-ins-ex.*", full.names=TRUE, recursive=TRUE)
-files.ex.ins <- list.files(path="src/statistics/stats/algo", pattern="vnd.*tran-ex-ins.*", full.names=TRUE, recursive=TRUE)
+files.ins.ex <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="vnd.*tran-ins-ex.*", full.names=TRUE, recursive=TRUE)
+files.ex.ins <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="vnd.*tran-ex-ins.*", full.names=TRUE, recursive=TRUE)
 
 if (length(files.ins.ex) != length(files.ex.ins)) {
   stop("Must have same amount of file in each batch to compare one by one")
@@ -150,15 +150,15 @@ for (i in seq_along(files.ins.ex)) {
   ))
 }
 
-write.table(wilcox.result.neigh.50, file="src/statistics/results/vnd/neigh_wilcox_50", row.names=FALSE, quote=FALSE)
-write.table(wilcox.result.neigh.100, file="src/statistics/results/vnd/neigh_wilcox_100", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.neigh.50, file="src/statistics/implementation-1/results/vnd/neigh_wilcox_50", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.neigh.100, file="src/statistics/implementation-1/results/vnd/neigh_wilcox_100", row.names=FALSE, quote=FALSE)
 
 
 # iii. best vs. first
 
 # Retrieve the test data
-files.best <- list.files(path="src/statistics/stats/algo", pattern="vnd.*best.*", full.names=TRUE, recursive=TRUE)
-files.first <- list.files(path="src/statistics/stats/algo", pattern="vnd.*first.*", full.names=TRUE, recursive=TRUE)
+files.best <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="vnd.*best.*", full.names=TRUE, recursive=TRUE)
+files.first <- list.files(path="src/statistics/implementation-1/stats/algo", pattern="vnd.*first.*", full.names=TRUE, recursive=TRUE)
 
 if (length(files.best) != length(files.first)) {
   stop("Must have same amount of file in each batch to compare one by one")
@@ -194,5 +194,5 @@ for (i in seq_along(files.ins.ex)) {
   ))
 }
 
-write.table(wilcox.result.pivot.50, file="src/statistics/results/vnd/pivot_wilcox_50", row.names=FALSE, quote=FALSE)
-write.table(wilcox.result.pivot.100, file="src/statistics/results/vnd/pivot_wilcox_100", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.pivot.50, file="src/statistics/implementation-1/results/vnd/pivot_wilcox_50", row.names=FALSE, quote=FALSE)
+write.table(wilcox.result.pivot.100, file="src/statistics/implementation-1/results/vnd/pivot_wilcox_100", row.names=FALSE, quote=FALSE)

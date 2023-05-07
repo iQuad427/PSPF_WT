@@ -1,6 +1,3 @@
-//
-// Created by Quentin Roels on 04/03/2023.
-//
 
 #include "context.h"
 
@@ -8,6 +5,8 @@ Context::Context() {
     this->algorithm = -1;
     this->initial = 0;
     this->pivot = 0;
+    this->tabuTenure = 0;
+    this->maxTime = 0;
     this->neighbourhoods = vector<int>();
 }
 
@@ -27,6 +26,38 @@ int Context::getInitial() {
 
 int Context::getPivot() {
     return this->pivot;
+}
+
+int Context::getInitialPB() {
+    return this->initPB;
+}
+
+int Context::getRecombination() {
+    return this->recombine;
+}
+
+int Context::getSelection() {
+    return this->select;
+}
+
+int Context::getMutation() {
+    return this->mutate;
+}
+
+int Context::getTabuTenure(){
+    return this->tabuTenure;
+}
+
+float Context::getMutationRate() {
+    return this->mutationRate;
+}
+
+int Context::getPopulationSize() {
+    return this->populationSize;
+}
+
+double Context::getMaxTime() {
+    return this->maxTime;
 }
 
 vector<int> Context::getNeighbourhoods() {
@@ -74,6 +105,14 @@ void Context::setPivoting(char* config) {
     return;
 }
 
+void Context::setTabuTenure(int tenure) {
+    this->tabuTenure = tenure;
+}
+
+void Context::setMaxTime(double time) {
+    this->maxTime = time;
+}
+
 /**
  * Set up the different neighbourhoods for II/VND algorithms
  *
@@ -81,7 +120,6 @@ void Context::setPivoting(char* config) {
  * @param config one of the strings corresponding to possible pivoting rules (transpose, insert or exchange)
  */
 void Context::setNeighbourhoods(int nbOfNeighbourhoods, char* config[]) {
-
     for (int i = 0; i < nbOfNeighbourhoods; i++) {
         if (!(((string) config[i]).compare("--tran"))) {
             this->neighbourhoods.insert(neighbourhoods.end(), TRANSPOSE);
@@ -93,6 +131,46 @@ void Context::setNeighbourhoods(int nbOfNeighbourhoods, char* config[]) {
             this->neighbourhoods.insert(neighbourhoods.end(), INSERT);
             this->neighbours.insert(neighbours.end(), insert);
         }
+    }
+    return;
+}
+
+void Context::setPopulationSize(int populationSize) {
+    this->populationSize = populationSize;
+}
+
+void Context::setMutationRate(float mutationRate) {
+    this->mutationRate = mutationRate;
+}
+
+void Context::setInitialisationPB(char* config) {
+    if (!(((string) config).compare("--rand-init"))) {
+        this->initPB = RAND_INIT;
+        this->initialisationPB = randomPopulationInitialisation;
+    }
+    return;
+}
+
+void Context::setRecombination(char* config) {
+    if (!(((string) config).compare("--rank-comb"))) {
+        this->recombine = RANK_COMB;
+        this->recombination = meritocraticRecombination;
+    }
+    return;
+}
+
+void Context::setSelection(char* config) {
+    if (!(((string) config).compare("--rank-select"))) {
+        this->select = RANK_SELECT;
+        this->selection = rankSelection;
+    }
+    return;
+}
+
+void Context::setMutation(char* config) {
+    if (!(((string) config).compare("--rand-mut"))) {
+        this->mutate = RAND_EX_MUT;
+        this->mutation = randomExchangeMutation;
     }
     return;
 }

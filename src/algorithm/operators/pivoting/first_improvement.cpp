@@ -3,8 +3,11 @@
 
 using namespace std;
 
+vector<int> betterNeighbour(
+        vector<int> state,
+        vector<int> (*yield) (vector<int>, int, int),
+        PfspInstance& instance) {
 
-vector<int> betterNeighbour(vector<int> state, vector<int> (*yield) (vector<int>, int, int), PfspInstance& instance) {
     long int best = instance.computeWT(state);
     vector<int> current;
 
@@ -15,7 +18,6 @@ vector<int> betterNeighbour(vector<int> state, vector<int> (*yield) (vector<int>
             }
         }
     }
-
     return state;
 }
 
