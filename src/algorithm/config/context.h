@@ -93,8 +93,7 @@ public:
     // Search Algorithm
     State (*initialisation) (PfspInstance&);
     State (*pivoting) (State, State (*) (State, int, int), PfspInstance&);
-    State (*neighbourhoodII) (State, int, int);
-    vector<State (*) (State, int, int)> neighbourhoodVND;
+    vector<State (*) (State, int, int)> neighbours;
 
     // Memetic Algorithm
     Population (*initialisationPB) (PfspInstance& instance, int populationSize);

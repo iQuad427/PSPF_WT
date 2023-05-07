@@ -197,7 +197,7 @@ State executeTabuSearch(PfspInstance& instance, Context context) {
             context.getMaxTime(),
             context.getTabuTenure(),
             context.initialisation,
-            context.neighbourhoodII
+            context.neighbours[0]
     );
 
     return algorithm.execute(instance);
@@ -214,7 +214,7 @@ State executeMemeticAlgorithm(PfspInstance& instance, Context context) {
             context.recombination,
             context.mutation,
             context.selection,
-            context.neighbourhoodII
+            context.neighbours[0]
     );
 
     return algorithm.execute(instance);
@@ -240,8 +240,8 @@ Context parseArguments(int argc, char* argv[]) {
         context.setInitialisation(argv[4]); // --rand or --srz
         context.setPivoting(argv[5]); // --first or --best
 
-        char* pivots[] = {argv[6]};
-        context.setNeighbourhoods(1, pivots); // --tran or --ex or --in
+        char* neighbours[] = {argv[6]};
+        context.setNeighbourhoods(1, neighbours); // --tran or --ex or --in
 
     } else if (!(((string) argv[3]).compare("--vnd"))) {
 
@@ -249,14 +249,17 @@ Context parseArguments(int argc, char* argv[]) {
         context.setInitialisation(argv[4]); // --rand or --srz
         context.setPivoting(argv[5]); // --first or --best
 
-        char* pivots[] = {argv[6], argv[7], argv[8]};
-        context.setNeighbourhoods(3, pivots); // sequence of --tran/--ex/--in
+        char* neighbours[] = {argv[6], argv[7], argv[8]};
+        context.setNeighbourhoods(3, neighbours); // sequence of --tran/--ex/--in
 
     } else if (!(((string) argv[3]).compare("--tabu"))) {
 
         context.setAlgorithm(TABU);
         context.setInitialisation(argv[4]); // --rand or --srz
-        context.setNeighbourhoodII(argv[5]); // --ex or --ins or --tran
+        
+        char* neighbours[] = {argv[5]};
+        context.setNeighbourhoods(1, neighbours); // --ex or --ins or --tran
+        
         context.setTabuTenure(atoi(argv[6])); // integer for tabu tenure
         context.setMaxTime(atof(argv[7])); // double for max computation time
 
@@ -269,7 +272,8 @@ Context parseArguments(int argc, char* argv[]) {
         context.setMutation(argv[6]);
         context.setSelection(argv[7]);
 
-        context.setNeighbourhoodII(argv[8]);
+        char* neighbours[] = {argv[8]};
+        context.setNeighbourhoods(1, neighbours);
 
         context.setPopulationSize(atoi(argv[9]));
         context.setMutationRate(atof(argv[10]));

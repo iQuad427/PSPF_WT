@@ -113,20 +113,6 @@ void Context::setMaxTime(double time) {
     this->maxTime = time;
 }
 
-void Context::setNeighbourhoodII(char* config) {
-    if (!(((string) config).compare("--tran"))) {
-        this->neighbourhoods.insert(neighbourhoods.end(), TRANSPOSE);
-        this->neighbourhoodII = transpose;
-    } else if (!(((string) config).compare("--in"))) {
-        this->neighbourhoods.insert(neighbourhoods.end(), INSERT);
-        this->neighbourhoodII = insert;
-    } else if (!(((string) config).compare("--ex"))) {
-        this->neighbourhoods.insert(neighbourhoods.end(), EXCHANGE);
-        this->neighbourhoodII = exchange;
-    }
-    return;
-}
-
 /**
  * Set up the different neighbourhoods for II/VND algorithms
  *
@@ -134,7 +120,6 @@ void Context::setNeighbourhoodII(char* config) {
  * @param config one of the strings corresponding to possible pivoting rules (transpose, insert or exchange)
  */
 void Context::setNeighbourhoods(int nbOfNeighbourhoods, char* config[]) {
-
     for (int i = 0; i < nbOfNeighbourhoods; i++) {
         if (!(((string) config[i]).compare("--tran"))) {
             this->neighbourhoods.insert(neighbourhoods.end(), TRANSPOSE);
