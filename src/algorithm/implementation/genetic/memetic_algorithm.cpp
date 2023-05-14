@@ -49,15 +49,36 @@ bool MemeticAlgorithm::termination(Time start, Time current) {
     return ((double) duration.count()) / 1000000 > this->maxTime;
 }
 
-State MemeticAlgorithm::execute(PfspInstance& instance) {
+State MemeticAlgorithm::execute(PfspInstance& instance, int iteration) {
+    Time start = Clock::now();
+    Time now;
+
+    fs::path p(instance.fileName);
+
+    ofstream runTimeDistribution;
+    runTimeDistribution.open("out/rtd/memetic/" + p.stem().string() + "_" + to_string(iteration));
+
     Population population = initialisation(instance, this->populationSize);
+    population = selection(instance, population, this->populationSize);
+
+    now = Clock::now();
+    auto duration = chrono::duration_cast<chrono::microseconds>(now - start);
+    double time = ((double) duration.count()) / 1000000;
+
+    runTimeDistribution << time << " " << instance.computeWT(population[0]) << endl;
+
     population = applySubsidiaryLocalSearch(instance, population);
+    population = selection(instance, population, this->populationSize);
+
+    now = Clock::now();
+    duration = chrono::duration_cast<chrono::microseconds>(now - start);
+    time = ((double) duration.count()) / 1000000;
+
+    runTimeDistribution << time << " " << instance.computeWT(population[0]) << endl;
 
     Population runningPopulation; // contain all the individuals currently under investigation
     Population recombinedPopulation; // contain individuals that have been recombined (population size)
     Population mutatedPopulation; // contain individuals that have been mutated (two times population size)
-
-    Time start = Clock::now();
 
     do {
         recombinedPopulation = recombination(instance, population, this->populationSize);
@@ -71,7 +92,13 @@ State MemeticAlgorithm::execute(PfspInstance& instance) {
 
         runningPopulation.insert(runningPopulation.end(), mutatedPopulation.begin(), mutatedPopulation.end());
         population = selection(instance, runningPopulation, this->populationSize);
-    } while (!termination(start, Clock::now()));
+
+        now = Clock::now();
+        duration = chrono::duration_cast<chrono::microseconds>(now - start);
+        time = ((double) duration.count()) / 1000000;
+
+        runTimeDistribution << time << " " << instance.computeWT(population[0]) << endl;
+    } while (!termination(start, now));
 
     return population[0]; // best rated individual in the population (after selection, decreasing order of quality)
 }

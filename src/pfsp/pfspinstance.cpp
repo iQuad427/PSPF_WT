@@ -49,6 +49,8 @@ long int PfspInstance::getTime(int job, int machine) {
 
 /* Read the instance from file : */
 bool PfspInstance::readDataFromFile(char *fileName) {
+    this->fileName = fileName;
+
     bool everythingOK = true;
     int j, m; // iterators
     long int readValue;

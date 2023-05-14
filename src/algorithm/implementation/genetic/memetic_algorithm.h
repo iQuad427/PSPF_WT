@@ -7,6 +7,7 @@
 #include "../../operators/operators.h"
 
 using namespace std;
+namespace fs = std::filesystem;
 
 typedef vector<int> State;
 typedef vector<State> Population;
@@ -41,7 +42,7 @@ public:
             Population (*selection) (PfspInstance& instance, Population population, int populationSize),
             State (*modifyState) (State, int, int)
     );
-    State execute(PfspInstance&);
+    State execute(PfspInstance&, int);
 };
 
 

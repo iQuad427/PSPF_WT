@@ -18,6 +18,8 @@ class PfspInstance{
     std::vector< std::vector <long int> > processingTimesMatrix;
 
   public:
+    char* fileName;
+
     PfspInstance();
     ~PfspInstance();
 

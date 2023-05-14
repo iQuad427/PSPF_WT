@@ -11,12 +11,12 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-Solution executeInstance(Context context, char* path);
+Solution executeInstance(Context context, char* path, int iteration);
 bool solutionIsValid(State solution, PfspInstance& instance);
 State executeVariableNeighbourhoodDescent(PfspInstance& instance, Context context);
 State executeIterativeImprovement(PfspInstance& instance, Context context);
-State executeTabuSearch(PfspInstance& instance, Context context);
-State executeMemeticAlgorithm(PfspInstance& instance, Context context);
+State executeTabuSearch(PfspInstance& instance, Context context, int iteration);
+State executeMemeticAlgorithm(PfspInstance& instance, Context context, int iteration);
 Context parseArguments(int argc, char* argv[]);
 vector<string> getInputFiles(Context context);
 string buildOutputFileNameFromContext(Context context);
@@ -77,7 +77,7 @@ void launchExperiment(Context context, vector<string> files, int iteration) {
 
                     auto start = chrono::high_resolution_clock::now();
 
-                    Solution solution = executeInstance(context, path);
+                    Solution solution = executeInstance(context, path, i);
 
                     auto end = chrono::high_resolution_clock::now();
 
@@ -99,7 +99,7 @@ void launchExperiment(Context context, vector<string> files, int iteration) {
     }
 }
 
-Solution executeInstance(Context context, char* path) {
+Solution executeInstance(Context context, char* path, int iteration) {
     cout << "Instance: " << path << endl;
 
     /* Create instance object */
@@ -116,9 +116,9 @@ Solution executeInstance(Context context, char* path) {
     } else if (context.getAlgorithm() == II) {
         solution = executeIterativeImprovement(instance, context);
     } else if (context.getAlgorithm() == TABU) {
-        solution = executeTabuSearch(instance, context);
+        solution = executeTabuSearch(instance, context, iteration);
     } else if (context.getAlgorithm() == GEN) {
-        solution = executeMemeticAlgorithm(instance, context);
+        solution = executeMemeticAlgorithm(instance, context, iteration);
     } else {
         cout << "Error: wrong context parameter, " << context.getAlgorithm() << endl;
         throw;
@@ -190,7 +190,7 @@ State executeIterativeImprovement(PfspInstance& instance, Context context) {
     return algorithm.execute(instance);
 }
 
-State executeTabuSearch(PfspInstance& instance, Context context) {
+State executeTabuSearch(PfspInstance& instance, Context context, int iteration) {
     TabuSearch algorithm;
 
     algorithm.configure(
@@ -200,10 +200,10 @@ State executeTabuSearch(PfspInstance& instance, Context context) {
             context.neighbours[0]
     );
 
-    return algorithm.execute(instance);
+    return algorithm.execute(instance, iteration);
 }
 
-State executeMemeticAlgorithm(PfspInstance& instance, Context context) {
+State executeMemeticAlgorithm(PfspInstance& instance, Context context, int iteration) {
     MemeticAlgorithm algorithm;
 
     algorithm.configure(
@@ -217,7 +217,7 @@ State executeMemeticAlgorithm(PfspInstance& instance, Context context) {
             context.neighbours[0]
     );
 
-    return algorithm.execute(instance);
+    return algorithm.execute(instance, iteration);
 }
 
 /**

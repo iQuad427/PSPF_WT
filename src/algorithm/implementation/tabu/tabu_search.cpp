@@ -84,13 +84,26 @@ bool TabuSearch::termination(Time start, Time current) {
     return ((double) duration.count()) / 1000000 > this->maxTime;
 }
 
-vector<int> TabuSearch::execute(PfspInstance& instance) {
+vector<int> TabuSearch::execute(PfspInstance& instance, int iteration) {
     Time start = Clock::now();
+    Time now;
+
+    fs::path p(instance.fileName);
+
+    ofstream runTimeDistribution;
+    runTimeDistribution.open("out/rtd/tabu/" + p.stem().string() + "_" + to_string(iteration));
+
     State solution = generateState(instance);
 
     State best_solution = solution;
     long int best_score = instance.computeWT(best_solution);
     long int new_score;
+
+    now = Clock::now();
+    auto duration = chrono::duration_cast<chrono::microseconds>(now - start);
+    double time = ((double) duration.count()) / 1000000;
+
+    runTimeDistribution << time << " " << best_score << endl;
 
     do {
         solution = nextState(instance, solution);
@@ -101,6 +114,12 @@ vector<int> TabuSearch::execute(PfspInstance& instance) {
         }
 
         updateHistory(solution);
+
+        now = Clock::now();
+        duration = chrono::duration_cast<chrono::microseconds>(now - start);
+        time = ((double) duration.count()) / 1000000;
+
+        runTimeDistribution << time << " " << best_score << endl;
     } while (!termination(start, Clock::now())); // && !equal(backup.begin(), backup.end(), solution.begin())
 
     return best_solution;

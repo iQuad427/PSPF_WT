@@ -7,6 +7,7 @@
 #include <utility>
 
 using namespace std;
+namespace fs = std::filesystem;
 
 typedef vector<int> State;
 typedef map<State, int> History;
@@ -36,7 +37,7 @@ public:
             State (*generateState) (PfspInstance&),
             State (*modifyState) (State, int, int)
     );
-    vector<int> execute(PfspInstance&);
+    vector<int> execute(PfspInstance&, int);
 };
 
 
